@@ -24,4 +24,16 @@ export const flowFields = pgTable("flow_fields", {
 	order: integer("order").notNull(),
 	createdAt: timestamp("created_at").defaultNow(),
 });
+
+export const runs = pgTable("runs", {
+	id: uuid("id").defaultRandom().primaryKey(),
+	userId: text("user_id").notNull(),
+	runId: text("run_id").notNull(),
+	deploymentId: text("deployment_id"),
+	prompt: text("prompt"),
+	imageUrl: text("image_url"),
+	liveStatus: text("live_status"),
+	createdAt: timestamp("created_at").defaultNow(),
+	updatedAt: timestamp("updated_at").defaultNow(),
+});
   

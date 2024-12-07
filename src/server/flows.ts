@@ -1,7 +1,7 @@
 import { db } from "@/db";
 import { flows, flowFields } from "@/db/schema";
 import { eq } from "drizzle-orm";
-import { auth } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs/server";
 import { writeFile } from "fs/promises";
 import { join } from "path";
 
