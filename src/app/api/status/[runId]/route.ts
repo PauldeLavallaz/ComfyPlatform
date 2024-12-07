@@ -5,10 +5,7 @@ import { eq } from "drizzle-orm";
 
 export const dynamic = 'force-dynamic';
 
-export async function GET(
-  req: Request,
-  { params }: { params: { runId: string } }
-) {
+export async function GET(request: Request) {
   try {
     const { userId } = auth();
     if (!userId) {
@@ -18,7 +15,15 @@ export async function GET(
       });
     }
 
-    const { runId } = params;
+    // Obtener el runId de la URL
+    const runId = request.url.split('/').pop();
+    if (!runId) {
+      return new Response(JSON.stringify({ error: "ID no proporcionado" }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
+
     const [run] = await db
       .select()
       .from(runs)
