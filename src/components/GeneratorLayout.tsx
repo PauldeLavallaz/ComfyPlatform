@@ -35,5 +35,3 @@ export function GeneratorLayout({ children, inputs }: GeneratorLayoutProps) {
     </div>
   );
 } 
-</```
-rewritten_file>
