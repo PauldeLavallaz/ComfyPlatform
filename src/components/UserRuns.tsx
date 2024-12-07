@@ -22,7 +22,7 @@ export function UserRuns({ deploymentId }: UserRunsProps) {
 
 	// Filtrar las imágenes por deploymentId si se proporciona
 	const filteredRuns = deploymentId 
-		? userRuns?.filter(run => run.deployment_id === deploymentId)
+		? userRuns?.filter(run => run.deploymentId === deploymentId)
 		: userRuns;
 
 	// Show placeholder if there are no runs
@@ -50,14 +50,14 @@ export function UserRuns({ deploymentId }: UserRunsProps) {
 				<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 					{filteredRuns.map((run) => (
 						<div 
-							key={run.run_id} 
+							key={run.runId} 
 							className="cursor-pointer w-full"
-							onClick={() => run.image_url && setSelectedImage(run.image_url)}
+							onClick={() => run.imageUrl && setSelectedImage(run.imageUrl)}
 						>
 							<ImageGenerationResult 
-								runId={run.run_id}
-								initialStatus={run.live_status || undefined}
-								initialImageUrl={run.image_url || undefined}
+								runId={run.runId}
+								initialStatus={run.liveStatus || undefined}
+								initialImageUrl={run.imageUrl || undefined}
 							/>
 						</div>
 					))}

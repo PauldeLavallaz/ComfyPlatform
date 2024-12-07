@@ -4,28 +4,27 @@ import { auth } from "@clerk/nextjs/server";
 import { eq, and, or, isNull } from "drizzle-orm";
 import { NextResponse } from "next/server";
 
-export async function POST() {
+export async function DELETE() {
   try {
     const { userId } = auth();
     if (!userId) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "No autorizado" }, { status: 401 });
     }
 
-    // Eliminar solo las ejecuciones trabadas (sin imagen y en estado queued/processing)
+    // Eliminar runs sin imagen o en estado queued/error
     await db.delete(runs).where(
       and(
-        eq(runs.user_id, userId),
-        isNull(runs.image_url),
+        eq(runs.userId, userId),
+        isNull(runs.imageUrl),
         or(
-          eq(runs.live_status, "queued"),
-          eq(runs.live_status, "processing")
+          eq(runs.liveStatus, "queued"),
+          eq(runs.liveStatus, "error")
         )
       )
     );
 
-    return NextResponse.json({ message: "Cleaned successfully" });
-  } catch (error) {
-    console.error("Error cleaning runs:", error);
-    return NextResponse.json({ error: "Failed to clean runs" }, { status: 500 });
+    return NextResponse.json({ success: true });
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 400 });
   }
 } 
