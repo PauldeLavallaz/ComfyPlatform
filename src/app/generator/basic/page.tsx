@@ -5,6 +5,7 @@ import { UserRuns } from "@/components/UserRuns";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import { CollapsibleGeneratorForm } from "@/components/CollapsibleGeneratorForm";
 import { useState } from "react";
 import { toast } from "sonner";
 import { mutate } from "swr";
@@ -51,7 +52,7 @@ export default function BasicGenerator() {
   };
 
   const inputs = (
-    <div className="space-y-6">
+    <CollapsibleGeneratorForm>
       <div className="space-y-2">
         <Label htmlFor="prompt">Prompt</Label>
         <Input 
@@ -86,7 +87,7 @@ export default function BasicGenerator() {
       >
         {isGenerating ? "Generando..." : "Generar"}
       </Button>
-    </div>
+    </CollapsibleGeneratorForm>
   );
 
   return (

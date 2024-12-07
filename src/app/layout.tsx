@@ -25,8 +25,8 @@ export default function RootLayout({
 		return (
 			<div className="flex min-h-screen">
 				{isSignedIn && !isPublicRoute && <Sidebar />}
-				<main className={`flex-1 ${isSignedIn && !isPublicRoute ? 'ml-64' : ''}`}>
-					<div className="max-w-7xl mx-auto px-4 py-8">
+				<main className={`flex-1 ${isSignedIn && !isPublicRoute ? 'md:ml-64' : ''}`}>
+					<div className="max-w-7xl mx-auto px-4 py-8 md:py-8 pt-20 md:pt-8">
 						{children}
 					</div>
 				</main>
