@@ -2,17 +2,13 @@ import { db } from "@/db/db";
 import { runs } from "@/db/schema";
 import { auth } from "@clerk/nextjs/server";
 import { eq } from "drizzle-orm";
-import { NextRequest } from "next/server";
 
 export const dynamic = 'force-dynamic';
 
-type Props = {
-  params: {
-    runId: string;
-  };
-};
-
-export async function GET(request: NextRequest, { params }: Props) {
+export async function GET(
+  req: Request,
+  { params }: { params: { runId: string } }
+) {
   try {
     const { userId } = auth();
     if (!userId) {
