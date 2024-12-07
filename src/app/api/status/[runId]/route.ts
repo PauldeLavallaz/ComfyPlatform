@@ -2,18 +2,24 @@ import { db } from "@/db/db";
 import { runs } from "@/db/schema";
 import { auth } from "@clerk/nextjs/server";
 import { eq } from "drizzle-orm";
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 
 export const dynamic = 'force-dynamic';
 
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { runId: string } }
-) {
+type Props = {
+  params: {
+    runId: string;
+  };
+};
+
+export async function GET(request: NextRequest, { params }: Props) {
   try {
     const { userId } = auth();
     if (!userId) {
-      return NextResponse.json({ error: "No autorizado" }, { status: 401 });
+      return new Response(JSON.stringify({ error: "No autorizado" }), {
+        status: 401,
+        headers: { 'Content-Type': 'application/json' },
+      });
     }
 
     const { runId } = params;
@@ -24,17 +30,23 @@ export async function GET(
       .limit(1);
 
     if (!run) {
-      return NextResponse.json(
-        { error: "Ejecución no encontrada" },
-        { status: 404 }
-      );
+      return new Response(JSON.stringify({ error: "Ejecución no encontrada" }), {
+        status: 404,
+        headers: { 'Content-Type': 'application/json' },
+      });
     }
 
-    return NextResponse.json({
+    return new Response(JSON.stringify({
       status: run.liveStatus,
       image_url: run.imageUrl,
+    }), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' },
     });
   } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 400 });
+    return new Response(JSON.stringify({ error: error.message }), {
+      status: 400,
+      headers: { 'Content-Type': 'application/json' },
+    });
   }
 } 
