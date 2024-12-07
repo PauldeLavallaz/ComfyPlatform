@@ -4,9 +4,13 @@ import { auth } from "@clerk/nextjs/server";
 import { eq } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
 
+type RouteSegmentProps = {
+  params: { runId: string }
+}
+
 export async function GET(
-  request: NextRequest,
-  { params }: { params: { runId: string } }
+  req: NextRequest,
+  context: RouteSegmentProps
 ) {
   try {
     const { userId } = auth();
@@ -14,7 +18,7 @@ export async function GET(
       return NextResponse.json({ error: "No autorizado" }, { status: 401 });
     }
 
-    const { runId } = params;
+    const { runId } = context.params;
     const [run] = await db
       .select()
       .from(runs)

@@ -23,6 +23,30 @@ interface Flow {
   fields: FlowField[];
 }
 
+interface FlowWithFields {
+  id: string;
+  userId: string;
+  name: string;
+  description: string | null;
+  deploymentId: string;
+  route: string;
+  icon: string;
+  createdAt: Date | null;
+  updatedAt: Date | null;
+  fields: Array<{
+    id: string;
+    flowId: string;
+    name: string;
+    type: string;
+    label: string;
+    placeholder: string | null;
+    defaultValue: string | null;
+    options: string | null;
+    order: number;
+    createdAt: Date | null;
+  }>;
+}
+
 export async function createFlow(flowData: Flow) {
   const { userId } = auth();
   if (!userId) throw new Error("No autorizado");
@@ -68,7 +92,7 @@ export async function getUserFlows() {
         orderBy: flowFields.order,
       },
     },
-  });
+  }) as FlowWithFields[];
 
   return userFlows.map(flow => ({
     ...flow,
