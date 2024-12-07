@@ -42,6 +42,7 @@
     "next": "rc",
     "next-themes": "^0.3.0",
     "node-fetch": "^3.3.2",
+    "postgres": "^3.4.5",
     "react": "rc",
     "react-dom": "rc",
     "react-dropzone": "^14.3.5",

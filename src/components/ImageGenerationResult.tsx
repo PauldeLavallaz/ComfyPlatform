@@ -6,6 +6,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { Card } from "./ui/card";
+import { ImageModal } from "./ImageModal";
 
 interface ImageGenerationResultProps {
   runId: string;
@@ -99,21 +100,11 @@ export function ImageGenerationResult({
         {loading && !image && <Skeleton className="w-full h-full" />}
       </Card>
 
-      {/* Modal */}
-      {isModalOpen && (
-        <div 
-          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
-          onClick={() => setIsModalOpen(false)}
-        >
-          <div className="max-w-[90vw] max-h-[90vh]">
-            <img 
-              src={image} 
-              alt="Generated image" 
-              className="max-w-full max-h-[90vh] object-contain"
-              onClick={(e) => e.stopPropagation()}
-            />
-          </div>
-        </div>
+      {isModalOpen && image && (
+        <ImageModal
+          imageUrl={image}
+          onClose={() => setIsModalOpen(false)}
+        />
       )}
     </>
   );
