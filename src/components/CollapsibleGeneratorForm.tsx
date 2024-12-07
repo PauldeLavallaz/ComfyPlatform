@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Button } from './ui/button';
-import { ChevronUp, ChevronDown } from 'lucide-react';
+import { X } from 'lucide-react';
 
 interface CollapsibleGeneratorFormProps {
   children: React.ReactNode;
@@ -25,30 +25,49 @@ export function CollapsibleGeneratorForm({ children, onSubmit }: CollapsibleGene
   }
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50">
-      {isOpen ? (
-        <div className="bg-white border-t shadow-lg p-4 space-y-4 animate-slide-up">
-          <div className="flex justify-between items-center">
-            <h3 className="font-semibold">Generar Imagen</h3>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setIsOpen(false)}
-            >
-              <ChevronDown className="h-4 w-4" />
-            </Button>
-          </div>
-          {children}
-        </div>
-      ) : (
+    <>
+      {/* Botón Generar en la parte superior */}
+      <div className="fixed top-4 right-4 z-40">
         <Button
-          className="w-full rounded-none bg-black text-white hover:bg-gray-900"
+          className="bg-black text-white hover:bg-gray-900"
           onClick={() => setIsOpen(true)}
         >
-          <ChevronUp className="h-4 w-4 mr-2" />
-          Generar Imagen
+          Generar
         </Button>
+      </div>
+
+      {/* Modal de generación */}
+      {isOpen && (
+        <>
+          {/* Overlay */}
+          <div 
+            className="fixed inset-0 bg-black bg-opacity-50 z-50"
+            onClick={() => setIsOpen(false)}
+          />
+          
+          {/* Modal */}
+          <div className="fixed inset-x-4 top-[20%] z-50 bg-white rounded-lg shadow-xl animate-slide-up">
+            <div className="p-4">
+              {/* Header */}
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="text-xl font-semibold">Generar Imagen</h2>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => setIsOpen(false)}
+                >
+                  <X className="h-4 w-4" />
+                </Button>
+              </div>
+
+              {/* Form Content */}
+              <div className="space-y-4">
+                {children}
+              </div>
+            </div>
+          </div>
+        </>
       )}
-    </div>
+    </>
   );
 } 
