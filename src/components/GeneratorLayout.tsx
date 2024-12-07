@@ -11,20 +11,29 @@ interface GeneratorLayoutProps {
 
 export function GeneratorLayout({ children, inputs }: GeneratorLayoutProps) {
   return (
-    <div className="flex-1 flex">
+    <div className="flex-1 flex relative">
       {/* Área principal de imágenes generadas */}
-      <ScrollArea className="flex-1 p-6">
+      <ScrollArea className="flex-1 p-6 w-full">
         <div className="max-w-[1200px] mx-auto">
           {children}
         </div>
       </ScrollArea>
 
-      {/* Panel lateral de inputs */}
-      <Card className="w-[400px] border-l rounded-none h-screen overflow-y-auto">
+      {/* Panel lateral de inputs - solo visible en desktop */}
+      <Card className="hidden md:block w-[400px] border-l rounded-none h-screen overflow-y-auto">
         <div className="p-6 space-y-6">
           {inputs}
         </div>
       </Card>
+
+      {/* Panel de inputs móvil - posicionado absolutamente para no afectar el layout */}
+      <div className="md:hidden absolute inset-0 pointer-events-none">
+        <div className="pointer-events-auto">
+          {inputs}
+        </div>
+      </div>
     </div>
   );
 } 
+</```
+rewritten_file>
