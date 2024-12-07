@@ -45,9 +45,9 @@ export function UserRuns({ deploymentId }: UserRunsProps) {
 	}
 
 	return (
-		<div className="w-full max-w-2xl mx-auto px-4">
+		<div className="w-full">
 			<ScrollArea className="h-full">
-				<div className="space-y-6">
+				<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 					{filteredRuns.map((run) => (
 						<div 
 							key={run.run_id} 
