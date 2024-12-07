@@ -36,7 +36,7 @@ export function UserRuns({ deploymentId }: UserRunsProps) {
 					<div className="text-center space-y-2">
 						<p className="text-xl font-semibold text-gray-700">No hay imágenes generadas</p>
 						<p className="text-sm text-gray-500 max-w-[250px]">
-							Usa el botón "Generar" para crear tu primera imagen con IA
+							Usa el botón &ldquo;Generar&rdquo; para crear tu primera imagen con IA
 						</p>
 					</div>
 				</div>
