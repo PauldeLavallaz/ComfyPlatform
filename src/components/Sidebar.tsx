@@ -37,7 +37,6 @@ export function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
-  // Handle window resize
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
@@ -53,7 +52,7 @@ export function Sidebar() {
       onClick={() => setIsOpen(!isOpen)}
       className="md:hidden fixed top-4 left-4 z-50 p-2 bg-black text-white rounded-md"
     >
-      {isOpen ? <X size={24} /> : <Menu size={24} />}
+      {!isOpen && <Menu size={24} />}
     </button>
   );
 
@@ -65,11 +64,19 @@ export function Sidebar() {
         w-64 bg-white border-r fixed h-screen flex flex-col transition-transform duration-300 ease-in-out
         md:translate-x-0 z-40
       `}>
-        {/* Logo */}
-        <div className="p-4 border-b">
+        {/* Logo and Close Button Container */}
+        <div className="p-4 border-b flex justify-between items-center">
           <Link href="/" className="text-xl font-bold">
             Morfeo Dreams Lab
           </Link>
+          {isMobile && isOpen && (
+            <button
+              onClick={() => setIsOpen(false)}
+              className="p-1 hover:bg-gray-100 rounded-md"
+            >
+              <X size={20} />
+            </button>
+          )}
         </div>
 
         {/* Navigation */}
