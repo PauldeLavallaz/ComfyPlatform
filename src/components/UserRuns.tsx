@@ -28,10 +28,18 @@ export function UserRuns({ deploymentId }: UserRunsProps) {
 	// Show placeholder if there are no runs
 	if (!filteredRuns || filteredRuns.length === 0) {
 		return (
-			<div className="w-full h-[50vh] flex flex-col items-center justify-center text-gray-400">
-				<ImageIcon className="w-16 h-16 mb-4" />
-				<p className="text-lg font-medium">No hay imágenes generadas</p>
-				<p className="text-sm">Las imágenes que generes aparecerán aquí</p>
+			<div className="w-full h-[80vh] flex items-center justify-center px-4">
+				<div className="max-w-md w-full border-2 border-dashed border-gray-300 rounded-xl p-8 flex flex-col items-center justify-center space-y-4">
+					<div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center">
+						<ImageIcon className="w-8 h-8 text-gray-400" />
+					</div>
+					<div className="text-center space-y-2">
+						<p className="text-xl font-semibold text-gray-700">No hay imágenes generadas</p>
+						<p className="text-sm text-gray-500 max-w-[250px]">
+							Usa el botón "Generar" para crear tu primera imagen con IA
+						</p>
+					</div>
+				</div>
 			</div>
 		);
 	}

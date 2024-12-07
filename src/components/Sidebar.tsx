@@ -46,26 +46,25 @@ export function Sidebar() {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  // Toggle menu button for mobile
-  const MenuButton = () => (
-    <button
-      onClick={() => setIsOpen(!isOpen)}
-      className="md:hidden fixed top-4 left-4 z-50 p-2 bg-black text-white rounded-md"
-    >
-      {!isOpen && <Menu size={24} />}
-    </button>
-  );
-
   return (
     <>
-      <MenuButton />
+      {/* Menu button solo visible cuando el sidebar está cerrado en móvil */}
+      {isMobile && !isOpen && (
+        <button
+          onClick={() => setIsOpen(true)}
+          className="fixed top-4 left-4 z-50 p-2 bg-black text-white rounded-md"
+        >
+          <Menu size={24} />
+        </button>
+      )}
+
       <aside className={`
         ${isMobile ? (isOpen ? 'translate-x-0' : '-translate-x-full') : 'translate-x-0'}
-        w-64 bg-white border-r fixed h-screen flex flex-col transition-transform duration-300 ease-in-out
+        w-64 bg-white border-r fixed h-full min-h-screen overflow-y-auto flex flex-col transition-transform duration-300 ease-in-out
         md:translate-x-0 z-40
       `}>
         {/* Logo and Close Button Container */}
-        <div className="p-4 border-b flex justify-between items-center">
+        <div className="sticky top-0 bg-white p-4 border-b flex justify-between items-center">
           <Link href="/" className="text-xl font-bold">
             Morfeo Dreams Lab
           </Link>
@@ -80,7 +79,7 @@ export function Sidebar() {
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 p-4 space-y-8">
+        <nav className="flex-1 p-4 space-y-8 overflow-y-auto">
           {sidebarItems.map((section) => (
             <div key={section.title}>
               <h2 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">
@@ -105,7 +104,7 @@ export function Sidebar() {
         </nav>
 
         {/* User - Fixed at bottom */}
-        <div className="p-4 border-t mt-auto">
+        <div className="sticky bottom-0 bg-white p-4 border-t mt-auto">
           <UserButton afterSignOutUrl="/" />
         </div>
       </aside>

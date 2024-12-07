@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Button } from './ui/button';
-import { X } from 'lucide-react';
+import { X, Wand2 } from 'lucide-react';
 
 interface CollapsibleGeneratorFormProps {
   children: React.ReactNode;
@@ -29,9 +29,11 @@ export function CollapsibleGeneratorForm({ children, onSubmit }: CollapsibleGene
       {/* Botón Generar en la parte superior */}
       <div className="fixed top-4 right-4 z-40">
         <Button
-          className="bg-black text-white hover:bg-gray-900"
+          size="lg"
+          className="bg-black text-white hover:bg-gray-900 rounded-full px-6 py-6 font-medium text-base shadow-lg flex items-center gap-2"
           onClick={() => setIsOpen(true)}
         >
+          <Wand2 className="w-5 h-5" />
           Generar
         </Button>
       </div>
@@ -46,17 +48,18 @@ export function CollapsibleGeneratorForm({ children, onSubmit }: CollapsibleGene
           />
           
           {/* Modal */}
-          <div className="fixed inset-x-4 top-[20%] z-50 bg-white rounded-lg shadow-xl animate-slide-up">
-            <div className="p-4">
+          <div className="fixed inset-x-4 top-[20%] z-50 bg-white rounded-xl shadow-xl animate-slide-up">
+            <div className="p-6">
               {/* Header */}
-              <div className="flex justify-between items-center mb-4">
+              <div className="flex justify-between items-center mb-6">
                 <h2 className="text-xl font-semibold">Generar Imagen</h2>
                 <Button
                   variant="ghost"
                   size="icon"
                   onClick={() => setIsOpen(false)}
+                  className="hover:bg-gray-100 rounded-full"
                 >
-                  <X className="h-4 w-4" />
+                  <X className="h-5 w-5" />
                 </Button>
               </div>
 
