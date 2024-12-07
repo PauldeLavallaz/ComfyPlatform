@@ -1,16 +1,27 @@
-import { sql } from "drizzle-orm";
-import { integer, sqliteTable, text, real } from "drizzle-orm/sqlite-core";
+import { integer, pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
 
-export const runs = sqliteTable("runs", {
-	run_id: text("run_id").notNull().primaryKey(),
-	user_id: text("user_id").notNull(),
-	createdAt: integer("created_at", { mode: "timestamp" }).default(
-	  sql`(strftime('%s', 'now'))`,
-	),
-	image_url: text("image_url"),
-	inputs: text("inputs", { mode: "json" }).$type<Record<string, any>>(),
-	live_status: text("live_status"),  // Este es el estado que usaremos
-	progress: real("progress"),
-	deployment_id: text("deployment_id"),
-  });
+export const flows = pgTable("flows", {
+	id: uuid("id").defaultRandom().primaryKey(),
+	userId: text("user_id").notNull(),
+	name: text("name").notNull(),
+	description: text("description"),
+	deploymentId: text("deployment_id").notNull(),
+	route: text("route").notNull(),
+	icon: text("icon").notNull(),
+	createdAt: timestamp("created_at").defaultNow(),
+	updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export const flowFields = pgTable("flow_fields", {
+	id: uuid("id").defaultRandom().primaryKey(),
+	flowId: uuid("flow_id").references(() => flows.id, { onDelete: "cascade" }).notNull(),
+	name: text("name").notNull(),
+	type: text("type").notNull(),
+	label: text("label").notNull(),
+	placeholder: text("placeholder"),
+	defaultValue: text("default_value"),
+	options: text("options"), // JSON string para campos select
+	order: integer("order").notNull(),
+	createdAt: timestamp("created_at").defaultNow(),
+});
   

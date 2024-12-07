@@ -10,7 +10,8 @@ import {
   Sparkles,
   CreditCard,
   Menu,
-  X
+  X,
+  Sliders
 } from "lucide-react";
 import { useState, useEffect } from "react";
 
@@ -21,6 +22,12 @@ const sidebarItems = [
       { name: "Flujos", icon: <Workflow className="w-4 h-4" />, href: "/" },
       { name: "Generador Básico", icon: <Sparkles className="w-4 h-4" />, href: "/generator/basic" },
       { name: "Franatics", icon: <CreditCard className="w-4 h-4" />, href: "/generator/franatics" },
+    ]
+  },
+  {
+    title: "ADMINISTRACIÓN",
+    items: [
+      { name: "Gestionar Flujos", icon: <Sliders className="w-4 h-4" />, href: "/admin/flows" },
     ]
   },
   {
