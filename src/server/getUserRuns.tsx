@@ -3,15 +3,17 @@
 import { db } from "@/db/db";
 import { runs } from "@/db/schema";
 import { auth } from "@clerk/nextjs/server";
-import { eq, desc, and } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
 
 export async function getUserRuns() {
 	const { userId } = auth();
-	if (!userId) throw new Error("User not found");
+	if (!userId) throw new Error("No autorizado");
 
-	return db
+	const userRuns = await db
 		.select()
 		.from(runs)
-		.where(eq(runs.user_id, userId))
+		.where(eq(runs.userId, userId))
 		.orderBy(desc(runs.createdAt));
+
+	return userRuns;
 }
