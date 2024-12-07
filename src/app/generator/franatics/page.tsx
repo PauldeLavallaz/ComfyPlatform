@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { CollapsibleGeneratorForm } from "@/components/CollapsibleGeneratorForm";
 import { useState } from "react";
 import { toast } from "sonner";
 import { mutate } from "swr";
@@ -67,7 +68,7 @@ export default function FranaticsGenerator() {
   };
 
   const inputs = (
-    <div className="space-y-6">
+    <CollapsibleGeneratorForm>
       <div className="space-y-2">
         <Label>Tu Selfie</Label>
         <ImageUpload
@@ -119,7 +120,7 @@ export default function FranaticsGenerator() {
       >
         {isGenerating ? "Generando..." : "Generar Credencial"}
       </Button>
-    </div>
+    </CollapsibleGeneratorForm>
   );
 
   return (

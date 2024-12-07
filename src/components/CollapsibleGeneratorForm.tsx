@@ -38,38 +38,40 @@ export function CollapsibleGeneratorForm({ children, onSubmit }: CollapsibleGene
         </Button>
       </div>
 
-      {/* Modal de generación */}
+      {/* Modal y Overlay */}
       {isOpen && (
-        <>
+        <div className="fixed inset-0 z-50">
           {/* Overlay */}
           <div 
-            className="fixed inset-0 bg-black bg-opacity-50 z-50"
+            className="absolute inset-0 bg-black bg-opacity-50"
             onClick={() => setIsOpen(false)}
           />
           
           {/* Modal */}
-          <div className="fixed inset-x-4 top-[20%] z-50 bg-white rounded-xl shadow-xl animate-slide-up">
-            <div className="p-6">
-              {/* Header */}
-              <div className="flex justify-between items-center mb-6">
-                <h2 className="text-xl font-semibold">Generar Imagen</h2>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => setIsOpen(false)}
-                  className="hover:bg-gray-100 rounded-full"
-                >
-                  <X className="h-5 w-5" />
-                </Button>
-              </div>
+          <div className="absolute inset-x-0 top-0 max-h-[90vh] overflow-y-auto">
+            <div className="mx-4 mt-16 bg-white rounded-xl shadow-xl animate-slide-up">
+              <div className="p-6">
+                {/* Header */}
+                <div className="flex justify-between items-center mb-6">
+                  <h2 className="text-xl font-semibold">Generar Imagen</h2>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => setIsOpen(false)}
+                    className="hover:bg-gray-100 rounded-full"
+                  >
+                    <X className="h-5 w-5" />
+                  </Button>
+                </div>
 
-              {/* Form Content */}
-              <div className="space-y-4">
-                {children}
+                {/* Form Content */}
+                <div className="space-y-4">
+                  {children}
+                </div>
               </div>
             </div>
           </div>
-        </>
+        </div>
       )}
     </>
   );

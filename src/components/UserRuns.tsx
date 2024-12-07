@@ -29,13 +29,13 @@ export function UserRuns({ deploymentId }: UserRunsProps) {
 	if (!filteredRuns || filteredRuns.length === 0) {
 		return (
 			<div className="w-full h-[80vh] flex items-center justify-center px-4">
-				<div className="max-w-md w-full border-2 border-dashed border-gray-300 rounded-xl p-8 flex flex-col items-center justify-center space-y-4">
+				<div className="max-w-[300px] w-full border-2 border-dashed border-gray-300 rounded-xl p-8 flex flex-col items-center justify-center space-y-4">
 					<div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center">
 						<ImageIcon className="w-8 h-8 text-gray-400" />
 					</div>
 					<div className="text-center space-y-2">
 						<p className="text-xl font-semibold text-gray-700">No hay imágenes generadas</p>
-						<p className="text-sm text-gray-500 max-w-[250px]">
+						<p className="text-sm text-gray-500">
 							Usa el botón &ldquo;Generar&rdquo; para crear tu primera imagen con IA
 						</p>
 					</div>
@@ -45,13 +45,13 @@ export function UserRuns({ deploymentId }: UserRunsProps) {
 	}
 
 	return (
-		<div className="w-full">
+		<div className="w-full max-w-2xl mx-auto px-4">
 			<ScrollArea className="h-full">
-				<div className="grid grid-cols-2 gap-4">
+				<div className="space-y-6">
 					{filteredRuns.map((run) => (
 						<div 
 							key={run.run_id} 
-							className="cursor-pointer"
+							className="cursor-pointer w-full"
 							onClick={() => run.image_url && setSelectedImage(run.image_url)}
 						>
 							<ImageGenerationResult 
