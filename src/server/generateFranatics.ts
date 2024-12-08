@@ -35,10 +35,10 @@ export async function generateFranatics(endpoint: string, inputs: any) {
     }
 
     await db.insert(runs).values({
-      run_id: result.runId,
-      user_id: userId,
-      live_status: "queued",
-      deployment_id: "cec337bf-69d6-4886-97b0-acbeba47f1ec", // Añadido deployment_id
+      runId: result.runId,
+      userId: userId,
+      liveStatus: "queued",
+      deploymentId: "cec337bf-69d6-4886-97b0-acbeba47f1ec",
       inputs: inputs,
     });
 
