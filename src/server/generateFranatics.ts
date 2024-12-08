@@ -39,7 +39,7 @@ export async function generateFranatics(endpoint: string, inputs: any) {
       userId: userId,
       liveStatus: "queued",
       deploymentId: "cec337bf-69d6-4886-97b0-acbeba47f1ec",
-      inputs: inputs,
+      prompt: JSON.stringify(inputs),
     });
 
     return result.runId;
