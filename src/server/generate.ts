@@ -2,7 +2,7 @@ import { db } from "@/db/db";
 import { runs } from "@/db/schema";
 import { auth } from "@clerk/nextjs/server";
 
-export async function generate(prompt: string) {
+export async function generate(prompt: string, endpoint: string, options: { height: number; width: number; lora?: string; batchSize?: number }) {
   const { userId } = auth();
   if (!userId) throw new Error("No autorizado");
 
@@ -15,8 +15,13 @@ export async function generate(prompt: string) {
     },
     body: JSON.stringify({
       deployment_id: "e322689e-065a-4d33-aa6a-ee941803ca95",
+      webhook: `${endpoint}/api/webhook`,
       inputs: {
         prompt,
+        height: options.height,
+        width: options.width,
+        lora: options.lora || "",
+        batch_size: options.batchSize || 1,
       },
     }),
   });

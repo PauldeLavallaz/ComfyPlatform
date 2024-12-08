@@ -1,4 +1,4 @@
-import { generateImage } from "@/server/generate";
+import { generate } from "@/server/generate";
 import { generateFranatics } from "@/server/generateFranatics";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
           { status: 400 }
         );
       }
-      run_id = await generateImage(prompt, endpoint, {
+      run_id = await generate(prompt, endpoint, {
         height: parseInt(height, 10),
         width: parseInt(width, 10),
         lora: lora || "",
