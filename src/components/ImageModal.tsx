@@ -1,6 +1,7 @@
 "use client";
 
 import { X } from "lucide-react";
+import { useEffect } from "react";
 
 interface ImageModalProps {
   imageUrl: string;
@@ -8,31 +9,34 @@ interface ImageModalProps {
 }
 
 export function ImageModal({ imageUrl, onClose }: ImageModalProps) {
-  return (
-    <div 
-      className="fixed inset-0 z-[100] bg-gradient-to-b from-black/95 to-black/90 backdrop-blur-sm"
-      onClick={onClose}
-    >
-      {/* Botón de cerrar */}
-      <button
-        onClick={onClose}
-        className="absolute top-4 right-4 p-2 text-white hover:text-white/80 transition-colors z-[101]"
-        aria-label="Cerrar"
-      >
-        <X className="w-8 h-8" />
-      </button>
+  // Prevenir scroll cuando el modal está abierto
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, []);
 
-      {/* Contenedor de la imagen */}
-      <div 
-        className="absolute inset-0 flex items-center justify-center p-4"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <div className="relative w-full max-w-4xl mx-auto">
+  return (
+    <div className="fixed inset-0 z-[200] bg-gradient-to-b from-black/95 to-black/90 flex flex-col">
+      {/* Header con botón de cerrar */}
+      <div className="flex justify-end p-4">
+        <button
+          onClick={onClose}
+          className="text-white p-2 hover:text-white/80 transition-colors"
+          aria-label="Cerrar"
+        >
+          <X className="w-8 h-8" />
+        </button>
+      </div>
+
+      {/* Contenedor de la imagen centrado */}
+      <div className="flex-1 flex items-center justify-center p-4">
+        <div className="relative w-full max-w-full max-h-full">
           <img
             src={imageUrl}
             alt="Imagen generada"
-            className="w-full h-auto max-h-[85vh] object-contain rounded-lg"
-            onClick={(e) => e.stopPropagation()}
+            className="w-full h-auto object-contain"
           />
         </div>
       </div>
