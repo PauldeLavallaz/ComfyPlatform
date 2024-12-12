@@ -2,47 +2,43 @@
 
 import { X } from "lucide-react";
 import { useEffect } from "react";
-import { createPortal } from "react-dom";
 
-export function ImageModal({ 
-  isOpen, 
-  imageUrl, 
-  onClose 
-}: { 
-  isOpen: boolean;
+interface ImageModalProps {
   imageUrl: string;
   onClose: () => void;
-}) {
-  if (!isOpen) return null;
+}
 
-  return createPortal(
+export function ImageModal({ imageUrl, onClose }: ImageModalProps) {
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, []);
+
+  return (
     <div 
-      className="fixed inset-0 z-[999999]"
+      className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center"
       onClick={onClose}
     >
-      <div className="absolute inset-0 bg-black/70 backdrop-blur-md pointer-events-none" />
-      
-      <div 
-        className="absolute inset-0 flex items-center justify-center p-6"
-        onClick={(e) => e.stopPropagation()}
+      <button
+        onClick={onClose}
+        className="absolute top-4 right-4 text-white p-2 hover:text-white/80 transition-colors rounded-full bg-black/20 backdrop-blur-sm"
+        aria-label="Cerrar"
       >
-        <div className="relative">
-          <button
-            onClick={onClose}
-            className="absolute -top-10 right-2 text-white/90 hover:text-white transition-all p-2 z-20"
-            aria-label="Cerrar"
-          >
-            <X className="w-5 h-5" />
-          </button>
+        <X className="w-6 h-6" />
+      </button>
 
-          <img
-            src={imageUrl}
-            alt="Vista completa"
-            className="w-auto h-auto max-w-[85vw] max-h-[80vh] object-contain rounded-lg"
-          />
-        </div>
+      <div 
+        className="relative max-w-[90vw] max-h-[90vh]"
+        onClick={e => e.stopPropagation()}
+      >
+        <img
+          src={imageUrl}
+          alt="Imagen generada"
+          className="w-auto h-auto max-w-full max-h-[90vh] object-contain"
+        />
       </div>
-    </div>,
-    document.body
+    </div>
   );
 } 

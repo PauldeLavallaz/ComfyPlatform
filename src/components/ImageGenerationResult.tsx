@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import { useEffect, useState, useCallback } from "react";
 import { Card } from "./ui/card";
 import { X } from "lucide-react";
+import { createPortal } from 'react-dom';
 
 interface ImageGenerationResultProps {
   runId: string;
@@ -27,6 +28,7 @@ export function ImageGenerationResult({
   const [status, setStatus] = useState<string>(initialStatus || "queued");
   const [progress, setProgress] = useState<number>(0);
   const [loading, setLoading] = useState(!initialImageUrl);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [retryCount, setRetryCount] = useState(0);
 
   useEffect(() => {
@@ -78,12 +80,72 @@ export function ImageGenerationResult({
     return () => clearInterval(interval);
   }, [runId, initialImageUrl, retryCount]);
 
+  // Efecto para limpiar el modal cuando se desmonta el componente
+  useEffect(() => {
+    return () => {
+      if (isModalOpen) {
+        document.body.style.overflow = 'auto';
+      }
+    };
+  }, [isModalOpen]);
+
+  const handleCloseModal = useCallback(() => {
+    setIsModalOpen(false);
+    document.body.style.overflow = 'auto';
+  }, []);
+
+  const handleOpenModal = useCallback(() => {
+    setIsModalOpen(true);
+    document.body.style.overflow = 'hidden';
+    if (onClick) onClick();
+  }, [onClick]);
+
+  const renderModal = () => {
+    if (!isModalOpen) return null;
+
+    return createPortal(
+      <div className="fixed inset-0 z-[999999]">
+        <div 
+          className="absolute inset-0 bg-black/70 backdrop-blur-md"
+          onClick={handleCloseModal}
+        />
+        
+        <div 
+          className="absolute inset-0 flex items-center justify-center p-6"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <div className="relative">
+            <button
+              onClick={handleCloseModal}
+              className="absolute -top-10 right-2 text-white/90 hover:text-white transition-all p-2 z-20"
+              aria-label="Cerrar"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            <img
+              src={image}
+              alt="Vista completa"
+              className="w-auto h-auto max-w-[85vw] max-h-[80vh] object-contain rounded-lg"
+            />
+          </div>
+        </div>
+      </div>,
+      document.body
+    );
+  };
+
   return (
-    <Card className={cn("overflow-hidden w-full aspect-[512/512] relative", className)}>
+    <Card 
+      className={cn(
+        "overflow-hidden w-full aspect-[512/512] relative",
+        className
+      )}
+    >
       {!loading && image && (
         <button 
           className="w-full h-full"
-          onClick={() => onClick && onClick()}
+          onClick={handleOpenModal}
         >
           <img 
             src={image} 
@@ -108,6 +170,8 @@ export function ImageGenerationResult({
         </div>
       )}
       {loading && !image && <Skeleton className="w-full h-full" />}
+
+      {renderModal()}
     </Card>
   );
 }

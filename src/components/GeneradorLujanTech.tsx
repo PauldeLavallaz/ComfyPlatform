@@ -2,102 +2,121 @@
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { useState } from "react";
 import { ImageUpload } from "./ImageUpload";
+import { Label } from "./ui/label";
 import { toast } from "sonner";
 import { mutate } from "swr";
+import { CollapsibleGeneratorForm } from "./CollapsibleGeneratorForm";
 
-interface GeneradorLujanTechProps {
-  onGenerate?: () => void;
-}
-
-export function GeneradorLujanTech({ onGenerate }: GeneradorLujanTechProps) {
-  const [formData, setFormData] = useState({
-    imagen: "",
-    nombre: "",
-    email: "",
-  });
+export function GeneradorLujanTech() {
+  const [nombre, setNombre] = useState("");
+  const [imagen, setImagen] = useState("");
+  const [email, setEmail] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
+  const [isFormOpen, setIsFormOpen] = useState(false);
 
-  const handleGenerate = async () => {
-    if (!formData.imagen) {
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!imagen) {
       toast.error("Por favor carga una selfie");
       return;
     }
 
-    if (!formData.nombre || !formData.email) {
+    if (!nombre || !email) {
       toast.error("Por favor completa todos los campos");
       return;
     }
 
     setIsGenerating(true);
+    
     try {
-      const response = await fetch("/api/generate", {
+      const response = await fetch("/api/generate-personalizado", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          ...formData,
-          deploymentId: "4bec08ac-4e1b-4ada-bd79-19a1fab8158a"
+          nombre,
+          imagen,
+          email,
         }),
       });
 
-      const result = await response.json();
-      if (response.ok && result.run_id) {
-        toast.success("¡Generación iniciada!");
-        mutate("userRuns");
-        onGenerate?.(); // Cerrar el sheet en mobile
-      } else {
-        toast.error(result.error || "Error al generar la imagen");
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Error al generar la imagen");
       }
-    } catch (error) {
-      console.error("Error:", error);
-      toast.error("Error al generar la imagen");
+
+      toast.success("¡Generación iniciada!");
+      setIsFormOpen(false);
+      
+      mutate("userRuns");
+      
+      setNombre("");
+      setImagen("");
+      setEmail("");
+    } catch (err) {
+      console.error(err);
+      toast.error(err instanceof Error ? err.message : "Error desconocido");
     } finally {
       setIsGenerating(false);
     }
   };
 
   return (
-    <div className="space-y-6">
-      <div className="space-y-2">
-        <Label>Tu Selfie</Label>
-        <ImageUpload
-          value={formData.imagen}
-          onChange={(url) => setFormData(prev => ({ ...prev, imagen: url }))}
-          accept="image/*"
-        />
-      </div>
+    <CollapsibleGeneratorForm 
+      isOpen={isFormOpen}
+      onOpenChange={setIsFormOpen}
+    >
+      <div className="space-y-6">
+        <div className="space-y-2">
+          <Label>Tu Selfie</Label>
+          <ImageUpload
+            value={imagen}
+            onChange={(url) => {
+              setImagen(url);
+              toast.success("Imagen cargada con éxito");
+            }}
+            accept="image/*"
+          />
+        </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="nombre">Nombre</Label>
-        <Input 
-          id="nombre"
-          value={formData.nombre}
-          onChange={(e) => setFormData(prev => ({ ...prev, nombre: e.target.value }))}
-          placeholder="Tu nombre completo"
-        />
-      </div>
+        <div className="space-y-2">
+          <Label htmlFor="nombre">Nombre</Label>
+          <Input
+            id="nombre"
+            value={nombre}
+            onChange={(e) => setNombre(e.target.value)}
+            placeholder="Tu nombre completo"
+            required
+            className="text-base"
+          />
+        </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="email">Email</Label>
-        <Input
-          id="email"
-          type="email"
-          value={formData.email}
-          onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
-          placeholder="tu@email.com"
-          inputMode="email"
-        />
-      </div>
+        <div className="space-y-2">
+          <Label htmlFor="email">Email</Label>
+          <Input
+            id="email"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="tu@email.com"
+            required
+            className="text-base"
+            inputMode="email"
+          />
+        </div>
 
-      <Button 
-        className="w-full" 
-        onClick={handleGenerate}
-        disabled={isGenerating}
-      >
-        {isGenerating ? "Generando..." : "Generar"}
-      </Button>
-    </div>
+        <Button 
+          type="submit" 
+          className="w-full"
+          disabled={isGenerating}
+          onClick={handleSubmit}
+        >
+          {isGenerating ? "Generando..." : "Generar"}
+        </Button>
+      </div>
+    </CollapsibleGeneratorForm>
   );
 } 
