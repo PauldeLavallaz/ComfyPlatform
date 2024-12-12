@@ -28,7 +28,7 @@ export function UserRuns({ deploymentId }: UserRunsProps) {
 	// Show placeholder if there are no runs
 	if (!filteredRuns || filteredRuns.length === 0) {
 		return (
-			<div className="w-full max-w-2xl mx-auto px-4">
+			<div className="max-w-2xl mx-auto p-6">
 				<div className="bg-gray-50 rounded-lg border border-dashed border-gray-200 p-8 text-center">
 					<div className="mx-auto w-12 h-12 mb-4 text-gray-400">
 						<ImageIcon className="w-full h-full" />
@@ -37,7 +37,7 @@ export function UserRuns({ deploymentId }: UserRunsProps) {
 						No hay imágenes generadas
 					</h3>
 					<p className="text-gray-500">
-						Usa el botón &ldquo;Generar&rdquo; para crear tu primera imagen con IA
+						Usa el botón "Generar" para crear tu primera imagen con IA
 					</p>
 				</div>
 			</div>
@@ -45,21 +45,19 @@ export function UserRuns({ deploymentId }: UserRunsProps) {
 	}
 
 	return (
-		<div className="w-full max-w-2xl mx-auto px-4">
-			<ScrollArea className="h-full">
-				<div className="space-y-6">
-					{filteredRuns.map((run) => (
-						<div key={run.run_id} className="cursor-pointer w-full">
-							<ImageGenerationResult 
-								runId={run.run_id}
-								initialStatus={run.live_status || undefined}
-								initialImageUrl={run.image_url || undefined}
-								onClick={() => run.image_url && setSelectedImage(run.image_url)}
-							/>
-						</div>
-					))}
-				</div>
-			</ScrollArea>
+		<div className="max-w-2xl mx-auto p-6">
+			<div className="space-y-6">
+				{filteredRuns.map((run) => (
+					<div key={run.run_id} className="cursor-pointer w-full">
+						<ImageGenerationResult 
+							runId={run.run_id}
+							initialStatus={run.live_status || undefined}
+							initialImageUrl={run.image_url || undefined}
+							onClick={() => run.image_url && setSelectedImage(run.image_url)}
+						/>
+					</div>
+				))}
+			</div>
 
 			<ImageModal
 				isOpen={!!selectedImage}
