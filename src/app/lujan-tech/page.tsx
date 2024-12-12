@@ -13,15 +13,13 @@ export default function LujanTechDayPage() {
   );
 
   return (
-    <div className="h-screen overflow-y-auto">
-      <GeneratorLayout inputs={inputs}>
-        <div className="px-6 py-2 md:ml-64">
-          <h1 className="text-2xl font-bold">
-            Luján Tech
-          </h1>
-        </div>
-        <UserRuns deploymentId="4bec08ac-4e1b-4ada-bd79-19a1fab8158a" />
-      </GeneratorLayout>
-    </div>
+    <GeneratorLayout inputs={inputs}>
+      <div className="px-6 py-2">
+        <h1 className="text-2xl font-bold">
+          Luján Tech
+        </h1>
+      </div>
+      <UserRuns deploymentId="4bec08ac-4e1b-4ada-bd79-19a1fab8158a" />
+    </GeneratorLayout>
   );
 } 

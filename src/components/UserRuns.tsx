@@ -4,7 +4,7 @@ import { getUserRuns } from "@/server/getUserRuns";
 import useSWR from "swr";
 import { ImageGenerationResult } from "./ImageGenerationResult";
 import { ScrollArea } from "./ui/scroll-area";
-import { ImageModal } from "./ImageModal";
+import { ImageModal } from "@/components/ImageModal";
 import { useState } from "react";
 import { ImageIcon } from "lucide-react";
 
@@ -49,27 +49,23 @@ export function UserRuns({ deploymentId }: UserRunsProps) {
 			<ScrollArea className="h-full">
 				<div className="space-y-6">
 					{filteredRuns.map((run) => (
-						<div 
-							key={run.run_id} 
-							className="cursor-pointer w-full"
-							onClick={() => run.image_url && setSelectedImage(run.image_url)}
-						>
+						<div key={run.run_id} className="cursor-pointer w-full">
 							<ImageGenerationResult 
 								runId={run.run_id}
 								initialStatus={run.live_status || undefined}
 								initialImageUrl={run.image_url || undefined}
+								onClick={() => run.image_url && setSelectedImage(run.image_url)}
 							/>
 						</div>
 					))}
 				</div>
 			</ScrollArea>
 
-			{selectedImage && (
-				<ImageModal
-					imageUrl={selectedImage}
-					onClose={() => setSelectedImage(null)}
-				/>
-			)}
+			<ImageModal
+				isOpen={!!selectedImage}
+				imageUrl={selectedImage || ''}
+				onClose={() => setSelectedImage(null)}
+			/>
 		</div>
 	);
 }
