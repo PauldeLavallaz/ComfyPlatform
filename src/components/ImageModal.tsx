@@ -1,6 +1,7 @@
 "use client";
 
 import { X } from "lucide-react";
+import { useEffect } from "react";
 
 interface ImageModalProps {
   imageUrl: string;
@@ -9,6 +10,16 @@ interface ImageModalProps {
 }
 
 export function ImageModal({ imageUrl, isOpen, onClose }: ImageModalProps) {
+  // Prevenir scroll cuando el modal está abierto
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+      return () => {
+        document.body.style.overflow = 'unset';
+      };
+    }
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
   return (
