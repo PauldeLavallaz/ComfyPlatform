@@ -20,8 +20,8 @@ export function GeneratorLayout({ inputs, children, title, action }: GeneratorLa
 
       {/* Contenedor principal con scroll */}
       <div className="flex-1 flex overflow-hidden">
-        {/* Área de contenido principal con scroll */}
-        <main className="flex-1 overflow-y-auto">
+        {/* Área de contenido principal con scroll y padding */}
+        <main className="flex-1 overflow-y-auto p-6">
           {children}
         </main>
 
