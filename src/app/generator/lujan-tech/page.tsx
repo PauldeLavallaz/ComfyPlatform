@@ -1,86 +1,35 @@
 "use client";
 
+import { GeneradorLujanTech } from "@/components/GeneradorLujanTech";
 import { GeneratorLayout } from "@/components/GeneratorLayout";
-import { UserRuns } from "@/components/UserRuns";
 import { Card } from "@/components/ui/card";
+import { UserRuns } from "@/components/UserRuns";
 import { Button } from "@/components/ui/button";
 import { Wand2 } from "lucide-react";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { useState } from "react";
-import { toast } from "sonner";
-import { mutate } from "swr";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
-export default function LujanTechGeneratorPage() {
-  const [formData, setFormData] = useState({
-    prompt: "",
-  });
-  const [isGenerating, setIsGenerating] = useState(false);
-
-  const handleGenerate = async () => {
-    if (!formData.prompt.trim()) {
-      toast.error("Por favor ingresa un prompt");
-      return;
-    }
-
-    setIsGenerating(true);
-    try {
-      const response = await fetch("/api/generate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ...formData,
-          deploymentId: "4bec08ac-4e1b-4ada-bd79-19a1fab8158a"
-        }),
-      });
-
-      const result = await response.json();
-      if (response.ok && result.run_id) {
-        toast.success("¡Generación iniciada!");
-        mutate("userRuns");
-      } else {
-        toast.error(result.error || "Error al generar la imagen");
-      }
-    } catch (error) {
-      console.error("Error:", error);
-      toast.error("Error al generar la imagen");
-    } finally {
-      setIsGenerating(false);
-    }
-  };
+export default function LujanTechPage() {
+  const [isOpen, setIsOpen] = useState(false);
 
   const inputs = (
     <Card className="rounded-none border-0 p-4">
-      <div className="space-y-4">
-        <div className="space-y-2">
-          <Label htmlFor="prompt">Prompt</Label>
-          <Input 
-            id="prompt"
-            value={formData.prompt}
-            onChange={(e) => setFormData(prev => ({ ...prev, prompt: e.target.value }))}
-            placeholder="Describe lo que quieres generar..."
-          />
-        </div>
-        <Button 
-          className="w-full"
-          onClick={handleGenerate}
-          disabled={isGenerating}
-        >
-          {isGenerating ? "Generando..." : "Generar"}
-        </Button>
-      </div>
+      <GeneradorLujanTech onGenerate={() => setIsOpen(false)} />
     </Card>
   );
 
   const generateButton = (
-    <Button 
-      className="gap-2"
-      onClick={handleGenerate}
-      disabled={isGenerating}
-    >
-      <Wand2 className="w-4 h-4" />
-      {isGenerating ? "Generando..." : "Generar"}
-    </Button>
+    <Sheet open={isOpen} onOpenChange={setIsOpen}>
+      <SheetTrigger asChild>
+        <Button className="gap-2 md:hidden">
+          <Wand2 className="w-4 h-4" />
+          Generar
+        </Button>
+      </SheetTrigger>
+      <SheetContent side="right" className="w-full sm:w-[400px] p-0">
+        {inputs}
+      </SheetContent>
+    </Sheet>
   );
 
   return (
