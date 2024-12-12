@@ -1,36 +1,34 @@
 "use client";
 
 import { ReactNode } from "react";
-import { Card } from "./ui/card";
-import { ScrollArea } from "./ui/scroll-area";
 
 interface GeneratorLayoutProps {
-  children: ReactNode;
-  inputs: ReactNode;
+  inputs: React.ReactNode;
+  children: React.ReactNode;
+  title: string;
+  action?: React.ReactNode;
 }
 
-export function GeneratorLayout({ children, inputs }: GeneratorLayoutProps) {
+export function GeneratorLayout({ inputs, children, title, action }: GeneratorLayoutProps) {
   return (
-    <div className="flex-1 flex relative h-[calc(100vh-4rem)]">
-      {/* Área principal de imágenes generadas - con altura fija */}
-      <ScrollArea className="flex-1 p-6 w-full">
-        <div className="max-w-[1200px] mx-auto">
+    <div className="flex flex-col h-screen overflow-hidden">
+      {/* Header fijo con borde inferior */}
+      <header className="flex items-center justify-between px-6 h-16 bg-white border-b shrink-0">
+        <h1 className="text-2xl font-bold">{title}</h1>
+        {action && <div>{action}</div>}
+      </header>
+
+      {/* Contenedor principal con scroll */}
+      <div className="flex-1 flex overflow-hidden">
+        {/* Área de contenido principal con scroll */}
+        <main className="flex-1 overflow-y-auto">
           {children}
-        </div>
-      </ScrollArea>
+        </main>
 
-      {/* Panel lateral de inputs - solo visible en desktop */}
-      <Card className="hidden md:block w-[400px] border-l rounded-none h-full overflow-y-auto">
-        <div className="p-6 space-y-6">
+        {/* Sidebar derecho fijo en desktop */}
+        <aside className="hidden md:block w-[400px] border-l bg-white overflow-y-auto">
           {inputs}
-        </div>
-      </Card>
-
-      {/* Panel de inputs móvil - posicionado absolutamente */}
-      <div className="md:hidden fixed inset-x-0 bottom-0 top-auto pointer-events-none">
-        <div className="pointer-events-auto">
-          {inputs}
-        </div>
+        </aside>
       </div>
     </div>
   );
