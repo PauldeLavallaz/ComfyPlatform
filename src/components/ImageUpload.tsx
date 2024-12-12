@@ -2,7 +2,7 @@
 
 import { useCallback, useState } from "react";
 import { Button } from "./ui/button";
-import { Upload } from "lucide-react";
+import { Upload, Check } from "lucide-react";
 
 interface ImageUploadProps {
   value: string;
@@ -13,6 +13,7 @@ interface ImageUploadProps {
 
 export function ImageUpload({ value, onChange, accept, showPreview = true }: ImageUploadProps) {
   const [loading, setLoading] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
 
   const onFileChange = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
     try {
@@ -35,6 +36,10 @@ export function ImageUpload({ value, onChange, accept, showPreview = true }: Ima
       }
 
       onChange(data.file_url);
+      
+      // Mostrar el indicador de éxito
+      setShowSuccess(true);
+      setTimeout(() => setShowSuccess(false), 2000);
     } catch (error) {
       console.error("Error:", error);
     } finally {
@@ -43,17 +48,51 @@ export function ImageUpload({ value, onChange, accept, showPreview = true }: Ima
   }, [onChange]);
 
   return (
-    <div className="space-y-4 w-full">
+    <div className="w-full">
       <Button
         type="button"
         variant="outline"
         disabled={loading}
-        className="w-full h-32 flex flex-col gap-2"
+        className={`w-full h-32 relative overflow-hidden ${value ? 'p-0' : ''}`}
         asChild
       >
-        <label>
-          <Upload className="w-6 h-6" />
-          <span>Subir Foto</span>
+        <label className="w-full h-full cursor-pointer">
+          {value ? (
+            <>
+              {showPreview ? (
+                <>
+                  <img
+                    src={value}
+                    alt="Uploaded"
+                    className="absolute inset-0 w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
+                    <Upload className="w-6 h-6 text-white" />
+                  </div>
+                </>
+              ) : (
+                <div className="flex flex-col items-center justify-center gap-2">
+                  {showSuccess ? (
+                    <>
+                      <Check className="w-6 h-6 text-green-500" />
+                      <span className="text-green-500 text-sm">Imagen cargada con éxito</span>
+                    </>
+                  ) : (
+                    <>
+                      <Upload className="w-6 h-6" />
+                      <span>Cambiar foto</span>
+                      <span className="text-xs text-gray-500">Imagen cargada</span>
+                    </>
+                  )}
+                </div>
+              )}
+            </>
+          ) : (
+            <div className="flex flex-col items-center justify-center gap-2">
+              <Upload className="w-6 h-6" />
+              <span>Subir Foto</span>
+            </div>
+          )}
           <input
             type="file"
             accept="image/*"
@@ -62,16 +101,6 @@ export function ImageUpload({ value, onChange, accept, showPreview = true }: Ima
           />
         </label>
       </Button>
-
-      {showPreview && value && (
-        <div className="relative aspect-square w-full max-w-[200px] mx-auto overflow-hidden rounded-lg border">
-          <img
-            src={value}
-            alt="Uploaded"
-            className="object-cover w-full h-full"
-          />
-        </div>
-      )}
     </div>
   );
 } 
