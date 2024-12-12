@@ -4,7 +4,7 @@ import { LoadingIcon } from "@/components/LoadingIcon";
 import { Progress } from "@/components/ui/progress";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Card } from "./ui/card";
 import { X } from "lucide-react";
 import { createPortal } from 'react-dom';
@@ -80,41 +80,41 @@ export function ImageGenerationResult({
     return () => clearInterval(interval);
   }, [runId, initialImageUrl, retryCount]);
 
-  // Función para manejar el cierre del modal
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-    // Asegurarnos de limpiar cualquier estado residual
-    document.body.style.overflow = 'auto';
-  };
+  // Efecto para limpiar el modal cuando se desmonta el componente
+  useEffect(() => {
+    return () => {
+      if (isModalOpen) {
+        document.body.style.overflow = 'auto';
+      }
+    };
+  }, [isModalOpen]);
 
-  // Función para manejar la apertura del modal
-  const handleOpenModal = () => {
-    if (!isModalOpen) {
-      setIsModalOpen(true);
-      if (onClick) onClick();
-    }
-  };
+  const handleCloseModal = useCallback(() => {
+    setIsModalOpen(false);
+    document.body.style.overflow = 'auto';
+  }, []);
+
+  const handleOpenModal = useCallback(() => {
+    setIsModalOpen(true);
+    document.body.style.overflow = 'hidden';
+    if (onClick) onClick();
+  }, [onClick]);
 
   const renderModal = () => {
     if (!isModalOpen) return null;
 
     return createPortal(
-      <div 
-        className="fixed inset-0 z-[999999]"
-        onClick={(e) => {
-          // Solo cerrar si el click fue directamente en este div
-          if (e.target === e.currentTarget) {
-            handleCloseModal();
-          }
-        }}
-      >
-        {/* Overlay separado del contenedor principal */}
-        <div className="absolute inset-0 bg-black/70 backdrop-blur-md pointer-events-none" />
+      <div className="fixed inset-0 z-[999999]">
+        <div 
+          className="absolute inset-0 bg-black/70 backdrop-blur-md"
+          onClick={handleCloseModal}
+        />
         
-        {/* Contenedor de la imagen y botón */}
-        <div className="relative z-10 w-full h-full flex items-center justify-center p-6">
+        <div 
+          className="absolute inset-0 flex items-center justify-center p-6"
+          onClick={(e) => e.stopPropagation()}
+        >
           <div className="relative">
-            {/* Botón de cerrar */}
             <button
               onClick={handleCloseModal}
               className="absolute -top-10 right-2 text-white/90 hover:text-white transition-all p-2 z-20"
@@ -123,7 +123,6 @@ export function ImageGenerationResult({
               <X className="w-5 h-5" />
             </button>
 
-            {/* Imagen */}
             <img
               src={image}
               alt="Vista completa"
