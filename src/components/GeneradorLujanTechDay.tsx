@@ -7,6 +7,7 @@ import { ImageUpload } from "./ImageUpload";
 import { Label } from "./ui/label";
 import { toast } from "sonner";
 import { mutate } from "swr";
+import { CollapsibleGeneratorForm } from "./CollapsibleGeneratorForm";
 
 export function GeneradorLujanTechDay() {
   const [nombre, setNombre] = useState("");
@@ -56,49 +57,53 @@ export function GeneradorLujanTechDay() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
-      <div className="space-y-2">
-        <Label>Tu Selfie</Label>
-        <ImageUpload
-          value={imagen}
-          onChange={setImagen}
-          accept="image/*"
-        />
-        <p className="text-sm text-gray-500">
-          Toma una selfie o carga una foto desde tu dispositivo
-        </p>
-      </div>
+    <CollapsibleGeneratorForm>
+      <div className="space-y-6">
+        <div className="space-y-2">
+          <Label>Tu Selfie</Label>
+          <ImageUpload
+            value={imagen}
+            onChange={(url) => {
+              setImagen(url);
+              toast.success("Imagen cargada con éxito");
+            }}
+            accept="image/*"
+            showPreview={!window?.matchMedia('(max-width: 768px)').matches}
+          />
+        </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="nombre">Nombre</Label>
-        <Input
-          id="nombre"
-          value={nombre}
-          onChange={(e) => setNombre(e.target.value)}
-          placeholder="Tu nombre completo"
-          required
-        />
-      </div>
+        <div className="space-y-2">
+          <Label htmlFor="nombre">Nombre</Label>
+          <Input
+            id="nombre"
+            value={nombre}
+            onChange={(e) => setNombre(e.target.value)}
+            placeholder="Tu nombre completo"
+            required
+          />
+        </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="email">Email</Label>
-        <Input
-          id="email"
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="tu@email.com"
-          required
-        />
-      </div>
+        <div className="space-y-2">
+          <Label htmlFor="email">Email</Label>
+          <Input
+            id="email"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="tu@email.com"
+            required
+          />
+        </div>
 
-      <Button 
-        type="submit" 
-        className="w-full"
-        disabled={isGenerating}
-      >
-        {isGenerating ? "Generando..." : "Generar"}
-      </Button>
-    </form>
+        <Button 
+          type="submit" 
+          className="w-full"
+          disabled={isGenerating}
+          onClick={handleSubmit}
+        >
+          {isGenerating ? "Generando..." : "Generar"}
+        </Button>
+      </div>
+    </CollapsibleGeneratorForm>
   );
 } 

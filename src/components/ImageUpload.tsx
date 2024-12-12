@@ -8,9 +8,10 @@ interface ImageUploadProps {
   value: string;
   onChange: (url: string) => void;
   accept?: string;
+  showPreview?: boolean;
 }
 
-export function ImageUpload({ value, onChange, accept }: ImageUploadProps) {
+export function ImageUpload({ value, onChange, accept, showPreview = true }: ImageUploadProps) {
   const [loading, setLoading] = useState(false);
 
   const onFileChange = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -62,8 +63,8 @@ export function ImageUpload({ value, onChange, accept }: ImageUploadProps) {
         </label>
       </Button>
 
-      {value && (
-        <div className="relative aspect-square w-full overflow-hidden rounded-lg border">
+      {showPreview && value && (
+        <div className="relative aspect-square w-full max-w-[200px] mx-auto overflow-hidden rounded-lg border">
           <img
             src={value}
             alt="Uploaded"
