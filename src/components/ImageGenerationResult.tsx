@@ -6,7 +6,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { Card } from "./ui/card";
-import { ImageModal } from "@/components/ImageModal";
 import { X } from "lucide-react";
 
 interface ImageGenerationResultProps {
@@ -77,26 +76,7 @@ export function ImageGenerationResult({
 
     checkStatus();
 
-    const handleVisibilityChange = () => {
-      if (document.visibilityState === 'visible') {
-        setRetryCount(0);
-        checkStatus();
-      }
-    };
-
-    const handleOnline = () => {
-      setRetryCount(0);
-      checkStatus();
-    };
-
-    document.addEventListener('visibilitychange', handleVisibilityChange);
-    window.addEventListener('online', handleOnline);
-
-    return () => {
-      clearInterval(interval);
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
-      window.removeEventListener('online', handleOnline);
-    };
+    return () => clearInterval(interval);
   }, [runId, initialImageUrl, retryCount]);
 
   return (
@@ -137,7 +117,7 @@ export function ImageGenerationResult({
         {loading && !image && <Skeleton className="w-full h-full" />}
       </Card>
 
-      {/* Portal para el modal */}
+      {/* Modal de imagen completa */}
       {isModalOpen && (
         <div className="fixed inset-0 z-[99999]">
           <div 
@@ -148,11 +128,21 @@ export function ImageGenerationResult({
           <div className="absolute inset-0 flex items-center justify-center p-4">
             <div className="relative max-w-[90vw] max-h-[90vh]">
               <button
-        <div className="fixed inset-0 z-[9999]">
-          <ImageModal
-            imageUrl={image}
-            onClose={() => setIsModalOpen(false)}
-          />
+                onClick={() => setIsModalOpen(false)}
+                className="absolute -top-10 right-0 text-white/90 hover:text-white p-2"
+                aria-label="Cerrar"
+              >
+                <X className="w-6 h-6" />
+              </button>
+              
+              <img
+                src={image}
+                alt="Vista ampliada"
+                className="w-auto h-auto max-w-full max-h-[85vh] object-contain"
+                onClick={(e) => e.stopPropagation()}
+              />
+            </div>
+          </div>
         </div>
       )}
     </>
