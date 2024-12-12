@@ -9,7 +9,6 @@ interface ImageModalProps {
 }
 
 export function ImageModal({ imageUrl, onClose }: ImageModalProps) {
-  // Prevenir scroll cuando el modal está abierto
   useEffect(() => {
     document.body.style.overflow = 'hidden';
     return () => {
@@ -19,31 +18,25 @@ export function ImageModal({ imageUrl, onClose }: ImageModalProps) {
 
   return (
     <div 
-      className="fixed inset-0 z-[200] bg-gradient-to-b from-black/95 to-black/90 flex flex-col"
-      onClick={(e) => {
-        if (e.target === e.currentTarget) {
-          onClose();
-        }
-      }}
+      className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center"
+      onClick={onClose}
     >
-      {/* Header con botón de cerrar */}
-      <div className="flex justify-end p-4">
-        <button
-          onClick={onClose}
-          className="text-white p-2 hover:text-white/80 transition-colors"
-          aria-label="Cerrar"
-        >
-          <X className="w-8 h-8" />
-        </button>
-      </div>
+      <button
+        onClick={onClose}
+        className="absolute top-4 right-4 text-white p-2 hover:text-white/80 transition-colors rounded-full bg-black/20 backdrop-blur-sm"
+        aria-label="Cerrar"
+      >
+        <X className="w-6 h-6" />
+      </button>
 
-      {/* Contenedor de la imagen centrado */}
-      <div className="flex-1 flex items-center justify-center p-4">
+      <div 
+        className="relative max-w-[90vw] max-h-[90vh]"
+        onClick={e => e.stopPropagation()}
+      >
         <img
           src={imageUrl}
           alt="Imagen generada"
-          className="max-w-full max-h-[calc(100vh-8rem)] w-auto h-auto object-contain"
-          onClick={(e) => e.stopPropagation()}
+          className="w-auto h-auto max-w-full max-h-[90vh] object-contain"
         />
       </div>
     </div>

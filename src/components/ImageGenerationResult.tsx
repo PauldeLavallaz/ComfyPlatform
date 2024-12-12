@@ -107,17 +107,13 @@ export function ImageGenerationResult({
         )}
       >
         {!loading && image && (
-          <img 
-            src={image} 
-            alt="Generated image" 
-            className="w-full h-full object-cover cursor-pointer"
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              setIsModalOpen(true);
-              if (onClick) onClick();
-            }}
-          />
+          <div className="w-full h-full" onClick={() => setIsModalOpen(true)}>
+            <img 
+              src={image} 
+              alt="Generated image" 
+              className="w-full h-full object-cover cursor-pointer"
+            />
+          </div>
         )}
         {!image && (
           <div className="absolute z-10 top-0 left-0 w-full h-full flex flex-col items-center justify-center gap-2 px-4">
@@ -139,10 +135,12 @@ export function ImageGenerationResult({
 
       {/* Modal */}
       {isModalOpen && (
-        <ImageModal
-          imageUrl={image}
-          onClose={() => setIsModalOpen(false)}
-        />
+        <div className="fixed inset-0 z-[9999]">
+          <ImageModal
+            imageUrl={image}
+            onClose={() => setIsModalOpen(false)}
+          />
+        </div>
       )}
     </>
   );
