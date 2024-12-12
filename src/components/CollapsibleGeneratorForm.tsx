@@ -35,7 +35,7 @@ export function CollapsibleGeneratorForm({
   return (
     <>
       {isMobile && !open && (
-        <div className="fixed top-4 right-4 z-40">
+        <div className="fixed top-4 right-4 z-[65]">
           <Button
             onClick={() => setOpen(true)}
             size="lg"
@@ -48,15 +48,15 @@ export function CollapsibleGeneratorForm({
       )}
 
       {open && (
-        <div className="fixed inset-0 z-50">
+        <div className="fixed inset-0 z-[70]">
           {/* Overlay */}
           <div 
             className="absolute inset-0 bg-black bg-opacity-50"
             onClick={() => setOpen(false)}
           />
           
-          {/* Modal */}
-          <div className="absolute inset-x-0 top-0 min-h-screen bg-white animate-slide-up">
+          {/* Modal - ajustado para respetar el sidebar */}
+          <div className="absolute inset-y-0 right-0 left-16 md:left-64 min-h-screen bg-white animate-slide-up">
             <div className="p-6">
               {/* Header */}
               <div className="flex justify-between items-center mb-6">
