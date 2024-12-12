@@ -63,7 +63,6 @@ export function GeneradorLujanTechDay() {
           value={imagen}
           onChange={setImagen}
           accept="image/*"
-          capture="user"
         />
         <p className="text-sm text-gray-500">
           Toma una selfie o carga una foto desde tu dispositivo
