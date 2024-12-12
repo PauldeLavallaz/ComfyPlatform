@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { Card } from "./ui/card";
 import { X } from "lucide-react";
+import { createPortal } from 'react-dom';
 
 interface ImageGenerationResultProps {
   runId: string;
@@ -79,6 +80,42 @@ export function ImageGenerationResult({
     return () => clearInterval(interval);
   }, [runId, initialImageUrl, retryCount]);
 
+  // Función para renderizar el modal
+  const renderModal = () => {
+    if (!isModalOpen) return null;
+
+    return createPortal(
+      <div 
+        className="fixed inset-0 z-[999999] flex items-center justify-center"
+        onClick={() => setIsModalOpen(false)}
+      >
+        {/* Overlay con blur sutil */}
+        <div className="absolute inset-0 bg-black/40 backdrop-blur-[1px]" />
+        
+        {/* Contenedor de la imagen */}
+        <div className="relative z-10 p-4 max-w-[95vw] max-h-[95vh]">
+          {/* Botón de cerrar */}
+          <button
+            onClick={() => setIsModalOpen(false)}
+            className="absolute -top-12 right-0 text-white/90 hover:text-white transition-all"
+            aria-label="Cerrar"
+          >
+            <X className="w-6 h-6" />
+          </button>
+
+          {/* Imagen */}
+          <img
+            src={image}
+            alt="Vista completa"
+            className="w-auto h-auto max-w-full max-h-[90vh] object-contain rounded shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          />
+        </div>
+      </div>,
+      document.body
+    );
+  };
+
   return (
     <>
       <Card 
@@ -117,34 +154,7 @@ export function ImageGenerationResult({
         {loading && !image && <Skeleton className="w-full h-full" />}
       </Card>
 
-      {/* Modal de imagen completa */}
-      {isModalOpen && (
-        <div className="fixed inset-0 z-[99999]">
-          <div 
-            className="absolute inset-0 bg-black/50 backdrop-blur-[2px]"
-            onClick={() => setIsModalOpen(false)}
-          />
-          
-          <div className="absolute inset-0 flex items-center justify-center p-4">
-            <div className="relative max-w-[90vw] max-h-[90vh]">
-              <button
-                onClick={() => setIsModalOpen(false)}
-                className="absolute -top-10 right-0 text-white/90 hover:text-white p-2"
-                aria-label="Cerrar"
-              >
-                <X className="w-6 h-6" />
-              </button>
-              
-              <img
-                src={image}
-                alt="Vista ampliada"
-                className="w-auto h-auto max-w-full max-h-[85vh] object-contain"
-                onClick={(e) => e.stopPropagation()}
-              />
-            </div>
-          </div>
-        </div>
-      )}
+      {renderModal()}
     </>
   );
 }
