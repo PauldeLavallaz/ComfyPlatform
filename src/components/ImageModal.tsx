@@ -18,7 +18,14 @@ export function ImageModal({ imageUrl, onClose }: ImageModalProps) {
   }, []);
 
   return (
-    <div className="fixed inset-0 z-[200] bg-gradient-to-b from-black/95 to-black/90 flex flex-col">
+    <div 
+      className="fixed inset-0 z-[200] bg-gradient-to-b from-black/95 to-black/90 flex flex-col"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) {
+          onClose();
+        }
+      }}
+    >
       {/* Header con botón de cerrar */}
       <div className="flex justify-end p-4">
         <button
@@ -32,13 +39,12 @@ export function ImageModal({ imageUrl, onClose }: ImageModalProps) {
 
       {/* Contenedor de la imagen centrado */}
       <div className="flex-1 flex items-center justify-center p-4">
-        <div className="relative w-full max-w-full max-h-full">
-          <img
-            src={imageUrl}
-            alt="Imagen generada"
-            className="w-full h-auto object-contain"
-          />
-        </div>
+        <img
+          src={imageUrl}
+          alt="Imagen generada"
+          className="max-w-full max-h-[calc(100vh-8rem)] w-auto h-auto object-contain"
+          onClick={(e) => e.stopPropagation()}
+        />
       </div>
     </div>
   );
