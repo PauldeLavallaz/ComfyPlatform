@@ -30,8 +30,7 @@ export function GeneradorLujanTech() {
     }
 
     setIsGenerating(true);
-    setIsFormOpen(false);
-
+    
     try {
       const response = await fetch("/api/generate-personalizado", {
         method: "POST",
@@ -49,9 +48,8 @@ export function GeneradorLujanTech() {
         throw new Error(data.error || "Error al generar la imagen");
       }
 
-      setTimeout(() => {
-        toast.success("¡Generación iniciada!");
-      }, 300);
+      toast.success("¡Generación iniciada!");
+      setIsFormOpen(false);
       
       mutate("userRuns");
       
