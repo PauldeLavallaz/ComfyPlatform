@@ -9,7 +9,11 @@ import { toast } from "sonner";
 import { mutate } from "swr";
 import { CollapsibleGeneratorForm } from "./CollapsibleGeneratorForm";
 
-export function GeneradorLujanTech() {
+interface GeneradorLujanTechProps {
+  onGenerate?: () => void;
+}
+
+export function GeneradorLujanTech({ onGenerate }: GeneradorLujanTechProps) {
   const [nombre, setNombre] = useState("");
   const [imagen, setImagen] = useState("");
   const [email, setEmail] = useState("");
@@ -50,6 +54,7 @@ export function GeneradorLujanTech() {
 
       toast.success("¡Generación iniciada!");
       setIsFormOpen(false);
+      onGenerate?.();
       
       mutate("userRuns");
       
