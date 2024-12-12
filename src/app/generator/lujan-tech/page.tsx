@@ -15,7 +15,7 @@ export default function LujanTechPage() {
   return (
     <div className="flex flex-col h-screen">
       <div className="flex-none bg-white">
-        <div className="pt-20">
+        <div className="pt-16">
           <h1 className="px-6 py-4 text-2xl font-bold">
             Luján Tech
           </h1>
