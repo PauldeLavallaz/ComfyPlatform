@@ -80,25 +80,36 @@ export function ImageGenerationResult({
     return () => clearInterval(interval);
   }, [runId, initialImageUrl, retryCount]);
 
-  // Función para renderizar el modal
+  // Función para manejar el cierre del modal
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    // Asegurarnos de limpiar cualquier estado residual
+    document.body.style.overflow = 'auto';
+  };
+
+  // Función para manejar la apertura del modal
+  const handleOpenModal = () => {
+    if (!isModalOpen) {
+      setIsModalOpen(true);
+      if (onClick) onClick();
+    }
+  };
+
   const renderModal = () => {
     if (!isModalOpen) return null;
 
     return createPortal(
       <div 
         className="fixed inset-0 z-[999999] flex items-center justify-center"
-        onClick={() => setIsModalOpen(false)}
+        onClick={handleCloseModal}
       >
-        {/* Overlay con blur más pronunciado */}
         <div className="absolute inset-0 bg-black/70 backdrop-blur-md" />
         
-        {/* Contenedor de la imagen */}
         <div className="relative z-10 p-6 max-w-[85vw] max-h-[85vh]">
-          {/* Botón de cerrar */}
           <button
             onClick={(e) => {
               e.stopPropagation();
-              setIsModalOpen(false);
+              handleCloseModal();
             }}
             className="absolute -top-10 right-2 text-white/90 hover:text-white transition-all p-2"
             aria-label="Cerrar"
@@ -106,7 +117,6 @@ export function ImageGenerationResult({
             <X className="w-5 h-5" />
           </button>
 
-          {/* Imagen */}
           <img
             src={image}
             alt="Vista completa"
@@ -129,12 +139,7 @@ export function ImageGenerationResult({
       {!loading && image && (
         <button 
           className="w-full h-full"
-          onClick={() => {
-            if (!isModalOpen) {
-              setIsModalOpen(true);
-              if (onClick) onClick();
-            }
-          }}
+          onClick={handleOpenModal}
         >
           <img 
             src={image} 
