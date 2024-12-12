@@ -11,8 +11,10 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { mutate } from "swr";
 import { ImageUpload } from "@/components/ImageUpload";
+import { Card } from "@/components/ui/card";
+import { Wand2 } from "lucide-react";
 
-export default function FranaticsGenerator() {
+export default function FranaticsGeneratorPage() {
   const [formData, setFormData] = useState({
     img_face: "",
     txt_nacionalidad: "",
@@ -68,63 +70,76 @@ export default function FranaticsGenerator() {
   };
 
   const inputs = (
-    <CollapsibleGeneratorForm>
-      <div className="space-y-2">
-        <Label>Tu Selfie</Label>
-        <ImageUpload
-          value={formData.img_face}
-          onChange={(url) => setFormData(prev => ({ ...prev, img_face: url }))}
-        />
-      </div>
+    <Card className="rounded-none border-0 p-4">
+      <CollapsibleGeneratorForm>
+        <div className="space-y-2">
+          <Label>Tu Selfie</Label>
+          <ImageUpload
+            value={formData.img_face}
+            onChange={(url) => setFormData(prev => ({ ...prev, img_face: url }))}
+          />
+        </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="nombre">Nombre</Label>
-        <Input
-          id="nombre"
-          value={formData.txt_nombre}
-          onChange={(e) => setFormData(prev => ({ ...prev, txt_nombre: e.target.value }))}
-          placeholder="Tu nombre completo"
-        />
-      </div>
+        <div className="space-y-2">
+          <Label htmlFor="nombre">Nombre</Label>
+          <Input
+            id="nombre"
+            value={formData.txt_nombre}
+            onChange={(e) => setFormData(prev => ({ ...prev, txt_nombre: e.target.value }))}
+            placeholder="Tu nombre completo"
+          />
+        </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="nacionalidad">Nacionalidad</Label>
-        <Input
-          id="nacionalidad"
-          value={formData.txt_nacionalidad}
-          onChange={(e) => setFormData(prev => ({ ...prev, txt_nacionalidad: e.target.value }))}
-          placeholder="Tu nacionalidad"
-        />
-      </div>
+        <div className="space-y-2">
+          <Label htmlFor="nacionalidad">Nacionalidad</Label>
+          <Input
+            id="nacionalidad"
+            value={formData.txt_nacionalidad}
+            onChange={(e) => setFormData(prev => ({ ...prev, txt_nacionalidad: e.target.value }))}
+            placeholder="Tu nacionalidad"
+          />
+        </div>
 
-      <div className="space-y-2">
-        <Label>Tu Franui Favorito</Label>
-        <Select 
-          value={formData.variedad}
-          onValueChange={(value) => setFormData(prev => ({ ...prev, variedad: value }))}>
-          <SelectTrigger>
-            <SelectValue placeholder="Elegí tu variedad favorita" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="Milk">Milk</SelectItem>
-            <SelectItem value="Dark">Dark</SelectItem>
-            <SelectItem value="Pink">Pink</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
+        <div className="space-y-2">
+          <Label>Tu Franui Favorito</Label>
+          <Select 
+            value={formData.variedad}
+            onValueChange={(value) => setFormData(prev => ({ ...prev, variedad: value }))}>
+            <SelectTrigger>
+              <SelectValue placeholder="Elegí tu variedad favorita" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="Milk">Milk</SelectItem>
+              <SelectItem value="Dark">Dark</SelectItem>
+              <SelectItem value="Pink">Pink</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
 
-      <Button 
-        className="w-full" 
-        onClick={handleGenerate}
-        disabled={isGenerating}
-      >
-        {isGenerating ? "Generando..." : "Generar Credencial"}
-      </Button>
-    </CollapsibleGeneratorForm>
+        <Button 
+          className="w-full" 
+          onClick={handleGenerate}
+          disabled={isGenerating}
+        >
+          {isGenerating ? "Generando..." : "Generar Credencial"}
+        </Button>
+      </CollapsibleGeneratorForm>
+    </Card>
+  );
+
+  const generateButton = (
+    <Button className="gap-2 rounded-full">
+      <Wand2 className="w-4 h-4" />
+      Generar
+    </Button>
   );
 
   return (
-    <GeneratorLayout inputs={inputs}>
+    <GeneratorLayout 
+      inputs={inputs}
+      title="Generador Franatics"
+      action={generateButton}
+    >
       <UserRuns deploymentId="cec337bf-69d6-4886-97b0-acbeba47f1ec" />
     </GeneratorLayout>
   );
