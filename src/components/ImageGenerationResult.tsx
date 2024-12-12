@@ -33,34 +33,42 @@ export function ImageGenerationResult({
 
     const checkStatus = async () => {
       try {
-        const response = await fetch(`/api/cd/run/${runId}`);
+        const response = await fetch(`/api/status/${runId}`);
         const data = await response.json();
         
-        if (data.status) {
-          setStatus(data.status);
+        if (data.live_status) {
+          setStatus(data.live_status);
           setProgress(data.progress || 0);
+
+          if (data.live_status === "error") {
+            console.error("Generation failed:", data);
+            return true;
+          }
         }
 
-        if (data.outputs?.[0]?.data?.images?.[0]?.url) {
-          const imageUrl = data.outputs[0].data.images[0].url;
-          setImage(imageUrl);
+        if (data.image_url) {
+          setImage(data.image_url);
           setLoading(false);
+          setStatus("completed");
           return true;
         }
 
         return false;
       } catch (error) {
         console.error("[Status Check] Error:", error);
-        return false;
+        setStatus("error");
+        return true;
       }
     };
 
     const interval = setInterval(async () => {
-      const imageFound = await checkStatus();
-      if (imageFound) {
+      const shouldStop = await checkStatus();
+      if (shouldStop) {
         clearInterval(interval);
       }
     }, 2000);
+
+    checkStatus();
 
     return () => clearInterval(interval);
   }, [runId, initialImageUrl]);
