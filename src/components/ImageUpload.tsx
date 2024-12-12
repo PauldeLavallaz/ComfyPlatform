@@ -2,16 +2,15 @@
 
 import { useCallback, useState } from "react";
 import { Button } from "./ui/button";
-import { Camera, Upload } from "lucide-react";
+import { Upload } from "lucide-react";
 
 interface ImageUploadProps {
   value: string;
   onChange: (url: string) => void;
   accept?: string;
-  capture?: "user" | "environment";
 }
 
-export function ImageUpload({ value, onChange, accept, capture }: ImageUploadProps) {
+export function ImageUpload({ value, onChange, accept }: ImageUploadProps) {
   const [loading, setLoading] = useState(false);
 
   const onFileChange = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -44,55 +43,31 @@ export function ImageUpload({ value, onChange, accept, capture }: ImageUploadPro
 
   return (
     <div className="space-y-4 w-full">
-      <div className="flex gap-4">
-        {/* Botón para tomar foto */}
-        <Button
-          type="button"
-          variant="outline"
-          disabled={loading}
-          className="flex-1"
-          asChild
-        >
-          <label>
-            <Camera className="w-4 h-4 mr-2" />
-            Tomar Foto
-            <input
-              type="file"
-              accept="image/*"
-              capture="user"
-              onChange={onFileChange}
-              className="hidden"
-            />
-          </label>
-        </Button>
-
-        {/* Botón para subir desde galería */}
-        <Button
-          type="button"
-          variant="outline"
-          disabled={loading}
-          className="flex-1"
-          asChild
-        >
-          <label>
-            <Upload className="w-4 h-4 mr-2" />
-            Subir Foto
-            <input
-              type="file"
-              accept="image/*"
-              onChange={onFileChange}
-              className="hidden"
-            />
-          </label>
-        </Button>
-      </div>
+      <Button
+        type="button"
+        variant="outline"
+        disabled={loading}
+        className="w-full h-32 flex flex-col gap-2"
+        asChild
+      >
+        <label>
+          <Upload className="w-6 h-6" />
+          <span>Subir Foto</span>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={onFileChange}
+            className="hidden"
+          />
+        </label>
+      </Button>
 
       {value && (
         <div className="relative aspect-square w-full overflow-hidden rounded-lg border">
           <img
             src={value}
             alt="Uploaded"
-            className="object-cover"
+            className="object-cover w-full h-full"
           />
         </div>
       )}
