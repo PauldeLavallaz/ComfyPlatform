@@ -15,7 +15,19 @@ import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { SparklesIcon } from "lucide-react";
 
-const sidebarItems = [
+interface SidebarItem {
+  name: string;
+  icon: React.ReactNode;
+  href: string;
+  external?: boolean;
+}
+
+interface SidebarSection {
+  title: string;
+  items: SidebarItem[];
+}
+
+const sidebarItems: SidebarSection[] = [
   {
     title: "APLICACIÓN",
     items: [
