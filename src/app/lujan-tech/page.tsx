@@ -4,6 +4,8 @@ import { GeneradorLujanTechDay } from "@/components/GeneradorLujanTechDay";
 import { GeneratorLayout } from "@/components/GeneratorLayout";
 import { Card } from "@/components/ui/card";
 import { UserRuns } from "@/components/UserRuns";
+import { Button } from "@/components/ui/button";
+import { Wand2 } from "lucide-react";
 
 export default function LujanTechDayPage() {
   const inputs = (
@@ -12,13 +14,19 @@ export default function LujanTechDayPage() {
     </Card>
   );
 
+  const generateButton = (
+    <Button className="gap-2">
+      <Wand2 className="w-4 h-4" />
+      Generar
+    </Button>
+  );
+
   return (
-    <GeneratorLayout inputs={inputs}>
-      <div className="px-6 py-2">
-        <h1 className="text-2xl font-bold">
-          Luján Tech
-        </h1>
-      </div>
+    <GeneratorLayout 
+      inputs={inputs}
+      title="Luján Tech"
+      action={generateButton}
+    >
       <UserRuns deploymentId="4bec08ac-4e1b-4ada-bd79-19a1fab8158a" />
     </GeneratorLayout>
   );

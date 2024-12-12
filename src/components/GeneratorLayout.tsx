@@ -5,14 +5,17 @@ import { ReactNode } from "react";
 interface GeneratorLayoutProps {
   inputs: React.ReactNode;
   children: React.ReactNode;
+  title: string;
+  action?: React.ReactNode; // Para el botón Generar
 }
 
-export function GeneratorLayout({ inputs, children }: GeneratorLayoutProps) {
+export function GeneratorLayout({ inputs, children, title, action }: GeneratorLayoutProps) {
   return (
     <div className="flex flex-col h-screen overflow-hidden">
-      {/* Header fijo */}
-      <header className="flex items-center h-14 px-6 border-b bg-white shrink-0">
-        <h1 className="text-2xl font-bold">Luján Tech</h1>
+      {/* Header fijo con título y acción */}
+      <header className="flex items-center justify-between h-14 px-6 border-b bg-white shrink-0">
+        <h1 className="text-2xl font-bold">{title}</h1>
+        {action && <div className="ml-auto">{action}</div>}
       </header>
 
       {/* Contenedor principal */}
