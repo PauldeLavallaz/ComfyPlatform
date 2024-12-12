@@ -28,6 +28,7 @@ export function ImageGenerationResult({
   const [progress, setProgress] = useState<number>(0);
   const [loading, setLoading] = useState(!initialImageUrl);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [retryCount, setRetryCount] = useState(0);
 
   useEffect(() => {
     if (!runId || initialImageUrl) return;
@@ -57,8 +58,12 @@ export function ImageGenerationResult({
         return false;
       } catch (error) {
         console.error("[Status Check] Error:", error);
-        setStatus("error");
-        return true;
+        if (retryCount > 3) {
+          setStatus("error");
+          return true;
+        }
+        setRetryCount(prev => prev + 1);
+        return false;
       }
     };
 
@@ -71,8 +76,27 @@ export function ImageGenerationResult({
 
     checkStatus();
 
-    return () => clearInterval(interval);
-  }, [runId, initialImageUrl]);
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        setRetryCount(0);
+        checkStatus();
+      }
+    };
+
+    const handleOnline = () => {
+      setRetryCount(0);
+      checkStatus();
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    window.addEventListener('online', handleOnline);
+
+    return () => {
+      clearInterval(interval);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      window.removeEventListener('online', handleOnline);
+    };
+  }, [runId, initialImageUrl, retryCount]);
 
   return (
     <>

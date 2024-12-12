@@ -14,7 +14,6 @@ export function GeneradorLujanTech() {
   const [imagen, setImagen] = useState("");
   const [email, setEmail] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
   const [isFormOpen, setIsFormOpen] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -51,9 +50,11 @@ export function GeneradorLujanTech() {
       toast.success("¡Generación iniciada!");
       mutate("userRuns");
       
-      if (isMobile) {
-        setIsFormOpen(false);
-      }
+      setIsFormOpen(false);
+      
+      setNombre("");
+      setImagen("");
+      setEmail("");
     } catch (err) {
       console.error(err);
       toast.error(err instanceof Error ? err.message : "Error desconocido");

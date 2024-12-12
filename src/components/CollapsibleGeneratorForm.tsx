@@ -35,13 +35,16 @@ export function CollapsibleGeneratorForm({
   return (
     <>
       {isMobile && !open && (
-        <button
-          onClick={() => setOpen(true)}
-          className="fixed top-4 right-4 z-40 bg-black text-white px-6 py-3 rounded-full shadow-lg"
-        >
-          <Wand2 className="w-5 h-5" />
-          Generar
-        </button>
+        <div className="fixed top-4 right-4 z-40">
+          <Button
+            onClick={() => setOpen(true)}
+            size="lg"
+            className="bg-black text-white hover:bg-gray-900 rounded-full px-6 py-2 flex items-center gap-2 shadow-lg"
+          >
+            <Wand2 className="w-5 h-5" />
+            <span>Generar</span>
+          </Button>
+        </div>
       )}
 
       {open && (
