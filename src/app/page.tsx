@@ -25,11 +25,11 @@ const dreamMachines = [
     features: ["Cargá tu selfie", "Completá tus datos", "Elegí tu Franui favorito"]
   },
   {
-    id: "lujan-tech-day",
-    name: "Luján Tech Day",
-    description: "Generá tu imagen personalizada para el Luján Tech Day",
+    id: "lujan-tech",
+    name: "Luján Tech",
+    description: "Generá tu imagen personalizada para el Luján Tech",
     icon: <Camera className="w-8 h-8" />,
-    path: "/generador-personalizado",
+    path: "/generator/lujan-tech",
     features: ["Tomá una selfie", "Recibí tu imagen por email"]
   }
 ];

@@ -30,6 +30,8 @@ export function GeneradorLujanTech() {
     }
 
     setIsGenerating(true);
+    setIsFormOpen(false);
+
     try {
       const response = await fetch("/api/generate-personalizado", {
         method: "POST",
@@ -47,10 +49,11 @@ export function GeneradorLujanTech() {
         throw new Error(data.error || "Error al generar la imagen");
       }
 
-      toast.success("¡Generación iniciada!");
-      mutate("userRuns");
+      setTimeout(() => {
+        toast.success("¡Generación iniciada!");
+      }, 300);
       
-      setIsFormOpen(false);
+      mutate("userRuns");
       
       setNombre("");
       setImagen("");
@@ -89,6 +92,7 @@ export function GeneradorLujanTech() {
             onChange={(e) => setNombre(e.target.value)}
             placeholder="Tu nombre completo"
             required
+            className="text-base"
           />
         </div>
 
@@ -101,6 +105,8 @@ export function GeneradorLujanTech() {
             onChange={(e) => setEmail(e.target.value)}
             placeholder="tu@email.com"
             required
+            className="text-base"
+            inputMode="email"
           />
         </div>
 

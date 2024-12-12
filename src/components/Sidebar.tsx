@@ -24,7 +24,7 @@ const sidebarItems = [
       { name: "Flujos", icon: <Workflow className="w-4 h-4" />, href: "/" },
       { name: "Generador Básico", icon: <Sparkles className="w-4 h-4" />, href: "/generator/basic" },
       { name: "Franatics", icon: <CreditCard className="w-4 h-4" />, href: "/generator/franatics" },
-      { name: "Luján Tech Day", icon: <Camera className="w-4 h-4" />, href: "/generador-personalizado" },
+      { name: "Luján Tech", icon: <Camera className="w-4 h-4" />, href: "/generator/lujan-tech" },
     ]
   },
   {
