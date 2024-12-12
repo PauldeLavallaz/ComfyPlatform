@@ -1,17 +1,15 @@
 import Link from "next/link";
 import { UserButton } from "@clerk/nextjs";
 import { 
-  LayoutGrid, 
-  Settings, 
-  Database, 
-  KeyRound,
-  BarChart,
   Workflow,
   Sparkles,
   CreditCard,
+  Camera,
+  Instagram,
+  Globe,
+  MessageCircle,
   Menu,
-  X,
-  Camera
+  X
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
@@ -28,11 +26,26 @@ const sidebarItems = [
     ]
   },
   {
-    title: "CUENTA",
+    title: "CONTACTO",
     items: [
-      { name: "Configuración", icon: <Settings className="w-4 h-4" />, href: "/settings" },
-      { name: "API Keys", icon: <KeyRound className="w-4 h-4" />, href: "/api-keys" },
-      { name: "Uso", icon: <Database className="w-4 h-4" />, href: "/usage" },
+      { 
+        name: "Instagram", 
+        icon: <Instagram className="w-4 h-4" />, 
+        href: "https://www.instagram.com/morfeoacademy",
+        external: true
+      },
+      { 
+        name: "Web", 
+        icon: <Globe className="w-4 h-4" />, 
+        href: "https://www.morfeoacademy.com/",
+        external: true
+      },
+      { 
+        name: "WhatsApp", 
+        icon: <MessageCircle className="w-4 h-4" />, 
+        href: "https://wa.me/1140318493",
+        external: true
+      },
     ]
   }
 ];
@@ -92,14 +105,27 @@ export function Sidebar() {
               <ul className="space-y-2">
                 {section.items.map((item) => (
                   <li key={item.name}>
-                    <Link 
-                      href={item.href}
-                      className="flex items-center gap-3 text-sm text-gray-600 hover:text-black hover:bg-gray-50 rounded-md p-2 transition-colors"
-                      onClick={() => isMobile && setIsOpen(false)}
-                    >
-                      {item.icon}
-                      {item.name}
-                    </Link>
+                    {item.external ? (
+                      <a 
+                        href={item.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-3 text-sm text-gray-600 hover:text-black hover:bg-gray-50 rounded-md p-2 transition-colors"
+                        onClick={() => isMobile && setIsOpen(false)}
+                      >
+                        {item.icon}
+                        {item.name}
+                      </a>
+                    ) : (
+                      <Link 
+                        href={item.href}
+                        className="flex items-center gap-3 text-sm text-gray-600 hover:text-black hover:bg-gray-50 rounded-md p-2 transition-colors"
+                        onClick={() => isMobile && setIsOpen(false)}
+                      >
+                        {item.icon}
+                        {item.name}
+                      </Link>
+                    )}
                   </li>
                 ))}
               </ul>

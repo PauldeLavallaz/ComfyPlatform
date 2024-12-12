@@ -46,7 +46,7 @@ export async function POST(request: NextRequest) {
     // Enviar datos a n8n
     try {
       const webhookResponse = await fetch(
-        "https://pauldelavallaz.app.n8n.cloud/webhook-test/5c01375c-2250-4258-ab88-b50fdf695999",
+        "https://pauldelavallaz.app.n8n.cloud/webhook/5c01375c-2250-4258-ab88-b50fdf695999",
         {
           method: "POST",
           headers: {
