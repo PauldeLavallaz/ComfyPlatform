@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ImageUpload } from "./ImageUpload";
 import { Label } from "./ui/label";
 import { toast } from "sonner";
@@ -14,6 +14,17 @@ export function GeneradorLujanTechDay() {
   const [imagen, setImagen] = useState("");
   const [email, setEmail] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.matchMedia('(max-width: 768px)').matches);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -68,7 +79,7 @@ export function GeneradorLujanTechDay() {
               toast.success("Imagen cargada con éxito");
             }}
             accept="image/*"
-            showPreview={!window?.matchMedia('(max-width: 768px)').matches}
+            showPreview={!isMobile}
           />
         </div>
 
