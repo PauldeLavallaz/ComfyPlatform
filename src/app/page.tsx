@@ -5,7 +5,7 @@ import { Onboarding } from "@/components/Onboarding";
 import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import Link from "next/link";
-import { ArrowRight, Sparkles, CreditCard, Stars } from "lucide-react";
+import { ArrowRight, Sparkles, CreditCard, Stars, Camera } from "lucide-react";
 
 const dreamMachines = [
   {
@@ -23,6 +23,14 @@ const dreamMachines = [
     icon: <CreditCard className="w-8 h-8" />,
     path: "/generator/franatics",
     features: ["Cargá tu selfie", "Completá tus datos", "Elegí tu Franui favorito"]
+  },
+  {
+    id: "lujan-tech-day",
+    name: "Luján Tech Day",
+    description: "Generá tu imagen personalizada para el Luján Tech Day",
+    icon: <Camera className="w-8 h-8" />,
+    path: "/generador-personalizado",
+    features: ["Tomá una selfie", "Recibí tu imagen por email"]
   }
 ];
 
