@@ -10,7 +10,8 @@ export function GeneradorPersonalizado() {
   const [nombre, setNombre] = useState("");
   const [imagen, setImagen] = useState("");
   const [email, setEmail] = useState("");
-  const [runId, setRunId] = useState<string | null>(null);
+  const [runId, setRunId] = useState<string>("");
+  const [imageUrl, setImageUrl] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -38,6 +39,26 @@ export function GeneradorPersonalizado() {
       }
 
       setRunId(data.runId);
+      
+      // Polling para obtener la URL de la imagen
+      const checkStatus = async () => {
+        const statusResponse = await fetch(`/api/status/${data.runId}`);
+        const statusData = await statusResponse.json();
+        
+        if (statusData.image_url) {
+          setImageUrl(statusData.image_url);
+          return true;
+        }
+        return false;
+      };
+
+      const interval = setInterval(async () => {
+        const hasImage = await checkStatus();
+        if (hasImage) {
+          clearInterval(interval);
+        }
+      }, 2000);
+
     } catch (err) {
       setError(err instanceof Error ? err.message : "Error desconocido");
     }
@@ -95,10 +116,9 @@ export function GeneradorPersonalizado() {
       </Card>
 
       <div>
-        {runId && (
+        {imageUrl && (
           <ImageGenerationResult
-            runId={runId}
-            className="w-full"
+            imageUrl={imageUrl}
           />
         )}
       </div>
