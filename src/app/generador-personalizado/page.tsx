@@ -15,7 +15,7 @@ export default function LujanTechDayPage() {
   return (
     <div className="flex flex-col h-screen">
       <h1 className="text-2xl font-bold px-6 py-4 border-b flex-none">
-        Luján Tech Day
+        Luján Tech
       </h1>
       <div className="flex-1 overflow-hidden">
         <GeneratorLayout inputs={inputs}>

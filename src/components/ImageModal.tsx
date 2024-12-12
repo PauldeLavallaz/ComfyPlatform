@@ -10,31 +10,29 @@ interface ImageModalProps {
 export function ImageModal({ imageUrl, onClose }: ImageModalProps) {
   return (
     <div 
-      className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4"
+      className="fixed inset-0 z-[100] bg-black/80 backdrop-blur-sm"
       onClick={onClose}
     >
       <div 
-        className="relative max-w-[90vw] max-h-[90vh] w-auto h-auto"
-        onClick={e => e.stopPropagation()}
+        className="fixed inset-0 flex items-center justify-center p-4"
+        onClick={(e) => e.stopPropagation()}
       >
         {/* Botón de cerrar */}
         <button
           onClick={onClose}
-          className="absolute -top-12 right-0 p-2 text-white/80 hover:text-white transition-colors"
+          className="absolute top-4 right-4 p-2 text-white/80 hover:text-white transition-colors z-[101]"
           aria-label="Cerrar"
         >
           <X className="w-8 h-8" />
         </button>
 
-        {/* Contenedor de la imagen con ratio automático */}
-        <div className="relative w-auto h-auto">
+        {/* Contenedor de la imagen */}
+        <div className="relative w-full max-w-4xl mx-auto">
           <img
             src={imageUrl}
             alt="Imagen generada"
-            className="rounded-lg object-contain max-w-[90vw] max-h-[85vh] w-auto h-auto"
-            style={{
-              boxShadow: '0 0 30px rgba(0, 0, 0, 0.3)'
-            }}
+            className="w-full h-auto max-h-[85vh] object-contain rounded-lg"
+            onClick={(e) => e.stopPropagation()}
           />
         </div>
       </div>

@@ -4,12 +4,20 @@ import { X, Wand2 } from 'lucide-react';
 
 interface CollapsibleGeneratorFormProps {
   children: React.ReactNode;
-  onSubmit?: () => void;
+  isOpen?: boolean;
+  onOpenChange?: (open: boolean) => void;
 }
 
-export function CollapsibleGeneratorForm({ children, onSubmit }: CollapsibleGeneratorFormProps) {
-  const [isOpen, setIsOpen] = useState(false);
+export function CollapsibleGeneratorForm({ 
+  children, 
+  isOpen, 
+  onOpenChange 
+}: CollapsibleGeneratorFormProps) {
+  const [internalOpen, setInternalOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+
+  const open = isOpen ?? internalOpen;
+  const setOpen = onOpenChange ?? setInternalOpen;
 
   useEffect(() => {
     const checkMobile = () => {
@@ -26,25 +34,22 @@ export function CollapsibleGeneratorForm({ children, onSubmit }: CollapsibleGene
 
   return (
     <>
-      {/* Botón Generar en la parte superior */}
-      <div className="fixed top-4 right-4 z-40">
-        <Button
-          size="lg"
-          className="bg-black text-white hover:bg-gray-900 rounded-full px-6 py-6 font-medium text-base shadow-lg flex items-center gap-2"
-          onClick={() => setIsOpen(true)}
+      {isMobile && !open && (
+        <button
+          onClick={() => setOpen(true)}
+          className="fixed top-4 right-4 z-40 bg-black text-white px-6 py-3 rounded-full shadow-lg"
         >
           <Wand2 className="w-5 h-5" />
           Generar
-        </Button>
-      </div>
+        </button>
+      )}
 
-      {/* Modal de generación */}
-      {isOpen && (
+      {open && (
         <div className="fixed inset-0 z-50">
           {/* Overlay */}
           <div 
             className="absolute inset-0 bg-black bg-opacity-50"
-            onClick={() => setIsOpen(false)}
+            onClick={() => setOpen(false)}
           />
           
           {/* Modal */}
@@ -56,7 +61,7 @@ export function CollapsibleGeneratorForm({ children, onSubmit }: CollapsibleGene
                 <Button
                   variant="ghost"
                   size="icon"
-                  onClick={() => setIsOpen(false)}
+                  onClick={() => setOpen(false)}
                   className="hover:bg-gray-100 rounded-full"
                 >
                   <X className="h-5 w-5" />
