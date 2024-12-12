@@ -13,10 +13,9 @@ export default function LujanTechDayPage() {
   );
 
   return (
-    <div className="flex flex-col h-screen">
-      <div className="flex-none bg-white">
-        <div className="h-4" />
-        <h1 className="text-2xl font-bold px-6 py-2 md:ml-64">
+    <div className="fixed inset-0 flex flex-col">
+      <div className="w-full bg-white" style={{ height: '50px' }}>
+        <h1 className="text-2xl font-bold px-6 h-full flex items-center md:ml-64">
           Luján Tech
         </h1>
         <div className="h-[1px] bg-gray-200" />
