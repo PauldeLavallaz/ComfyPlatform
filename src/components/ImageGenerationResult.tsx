@@ -86,7 +86,11 @@ export function ImageGenerationResult({
             src={image} 
             alt="Generated image" 
             className="w-full h-full object-cover cursor-pointer"
-            onClick={() => setIsModalOpen(true)}
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsModalOpen(true);
+              if (onClick) onClick();
+            }}
           />
         )}
         {!image && (
@@ -111,9 +115,15 @@ export function ImageGenerationResult({
       {isModalOpen && (
         <div 
           className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
-          onClick={() => setIsModalOpen(false)}
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsModalOpen(false);
+          }}
         >
-          <div className="max-w-[90vw] max-h-[90vh]">
+          <div 
+            className="max-w-[90vw] max-h-[90vh]"
+            onClick={(e) => e.stopPropagation()}
+          >
             <img 
               src={image} 
               alt="Generated image" 
