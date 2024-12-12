@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
+import { ImageUpload } from "./ImageUpload";
 import { toast } from "sonner";
 import { mutate } from "swr";
 
@@ -13,13 +14,20 @@ interface GeneradorLujanTechProps {
 
 export function GeneradorLujanTech({ onGenerate }: GeneradorLujanTechProps) {
   const [formData, setFormData] = useState({
-    prompt: "",
+    imagen: "",
+    nombre: "",
+    email: "",
   });
   const [isGenerating, setIsGenerating] = useState(false);
 
   const handleGenerate = async () => {
-    if (!formData.prompt.trim()) {
-      toast.error("Por favor ingresa un prompt");
+    if (!formData.imagen) {
+      toast.error("Por favor carga una selfie");
+      return;
+    }
+
+    if (!formData.nombre || !formData.email) {
+      toast.error("Por favor completa todos los campos");
       return;
     }
 
@@ -38,7 +46,7 @@ export function GeneradorLujanTech({ onGenerate }: GeneradorLujanTechProps) {
       if (response.ok && result.run_id) {
         toast.success("¡Generación iniciada!");
         mutate("userRuns");
-        onGenerate?.(); // Cerrar el sheet en mobile después de generar
+        onGenerate?.(); // Cerrar el sheet en mobile
       } else {
         toast.error(result.error || "Error al generar la imagen");
       }
@@ -51,16 +59,38 @@ export function GeneradorLujanTech({ onGenerate }: GeneradorLujanTechProps) {
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       <div className="space-y-2">
-        <Label htmlFor="prompt">Prompt</Label>
-        <Input 
-          id="prompt"
-          value={formData.prompt}
-          onChange={(e) => setFormData(prev => ({ ...prev, prompt: e.target.value }))}
-          placeholder="Describe lo que quieres generar..."
+        <Label>Tu Selfie</Label>
+        <ImageUpload
+          value={formData.imagen}
+          onChange={(url) => setFormData(prev => ({ ...prev, imagen: url }))}
+          accept="image/*"
         />
       </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="nombre">Nombre</Label>
+        <Input 
+          id="nombre"
+          value={formData.nombre}
+          onChange={(e) => setFormData(prev => ({ ...prev, nombre: e.target.value }))}
+          placeholder="Tu nombre completo"
+        />
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="email">Email</Label>
+        <Input
+          id="email"
+          type="email"
+          value={formData.email}
+          onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
+          placeholder="tu@email.com"
+          inputMode="email"
+        />
+      </div>
+
       <Button 
         className="w-full" 
         onClick={handleGenerate}

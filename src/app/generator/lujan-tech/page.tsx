@@ -7,7 +7,7 @@ import { UserRuns } from "@/components/UserRuns";
 import { Button } from "@/components/ui/button";
 import { Wand2 } from "lucide-react";
 import { useState } from "react";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 
 export default function LujanTechPage() {
   const [isOpen, setIsOpen] = useState(false);
@@ -27,7 +27,14 @@ export default function LujanTechPage() {
         </Button>
       </SheetTrigger>
       <SheetContent side="right" className="w-full sm:w-[400px] p-0">
-        {inputs}
+        <div className="p-6">
+          <SheetHeader>
+            <SheetTitle>Generar Imagen</SheetTitle>
+          </SheetHeader>
+          <div className="mt-4">
+            {inputs}
+          </div>
+        </div>
       </SheetContent>
     </Sheet>
   );
