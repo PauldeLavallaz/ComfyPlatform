@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { Card } from "./ui/card";
 import { ImageModal } from "@/components/ImageModal";
+import { X } from "lucide-react";
 
 interface ImageGenerationResultProps {
   runId: string;
@@ -107,13 +108,16 @@ export function ImageGenerationResult({
         )}
       >
         {!loading && image && (
-          <div className="w-full h-full" onClick={() => setIsModalOpen(true)}>
+          <button 
+            className="w-full h-full"
+            onClick={() => setIsModalOpen(true)}
+          >
             <img 
               src={image} 
               alt="Generated image" 
-              className="w-full h-full object-cover cursor-pointer"
+              className="w-full h-full object-cover"
             />
-          </div>
+          </button>
         )}
         {!image && (
           <div className="absolute z-10 top-0 left-0 w-full h-full flex flex-col items-center justify-center gap-2 px-4">
@@ -133,8 +137,17 @@ export function ImageGenerationResult({
         {loading && !image && <Skeleton className="w-full h-full" />}
       </Card>
 
-      {/* Modal */}
+      {/* Portal para el modal */}
       {isModalOpen && (
+        <div className="fixed inset-0 z-[99999]">
+          <div 
+            className="absolute inset-0 bg-black/50 backdrop-blur-[2px]"
+            onClick={() => setIsModalOpen(false)}
+          />
+          
+          <div className="absolute inset-0 flex items-center justify-center p-4">
+            <div className="relative max-w-[90vw] max-h-[90vh]">
+              <button
         <div className="fixed inset-0 z-[9999]">
           <ImageModal
             imageUrl={image}
