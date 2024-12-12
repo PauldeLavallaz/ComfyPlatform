@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
       }
     });
 
-    // Enviar datos a n8n inmediatamente después de recibir el runId
+    // Enviar datos a n8n
     try {
       const webhookResponse = await fetch(
         "https://pauldelavallaz.app.n8n.cloud/webhook-test/5c01375c-2250-4258-ab88-b50fdf695999",
@@ -55,7 +55,7 @@ export async function POST(request: NextRequest) {
           body: JSON.stringify({
             email,
             runId: result.runId,
-            nombre // Opcional: por si quieres incluir el nombre también
+            nombre
           }),
         }
       );
@@ -64,7 +64,6 @@ export async function POST(request: NextRequest) {
         console.error("Error al enviar datos a n8n:", await webhookResponse.text());
       }
     } catch (webhookError) {
-      // Log el error pero no interrumpir el flujo principal
       console.error("Error enviando a n8n:", webhookError);
     }
 

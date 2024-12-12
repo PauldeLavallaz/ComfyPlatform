@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { ImageUpload } from "./ImageUpload";
 import { Label } from "./ui/label";
 import { toast } from "sonner";
@@ -14,17 +14,7 @@ export function GeneradorLujanTechDay() {
   const [imagen, setImagen] = useState("");
   const [email, setEmail] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.matchMedia('(max-width: 768px)').matches);
-    };
-    
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
+  const [isFormOpen, setIsFormOpen] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -40,6 +30,7 @@ export function GeneradorLujanTechDay() {
     }
 
     setIsGenerating(true);
+    
     try {
       const response = await fetch("/api/generate-personalizado", {
         method: "POST",
@@ -58,7 +49,13 @@ export function GeneradorLujanTechDay() {
       }
 
       toast.success("¡Generación iniciada!");
+      setIsFormOpen(false);
+      
       mutate("userRuns");
+      
+      setNombre("");
+      setImagen("");
+      setEmail("");
     } catch (err) {
       console.error(err);
       toast.error(err instanceof Error ? err.message : "Error desconocido");
@@ -68,7 +65,10 @@ export function GeneradorLujanTechDay() {
   };
 
   return (
-    <CollapsibleGeneratorForm>
+    <CollapsibleGeneratorForm 
+      isOpen={isFormOpen}
+      onOpenChange={setIsFormOpen}
+    >
       <div className="space-y-6">
         <div className="space-y-2">
           <Label>Tu Selfie</Label>
@@ -79,7 +79,6 @@ export function GeneradorLujanTechDay() {
               toast.success("Imagen cargada con éxito");
             }}
             accept="image/*"
-            showPreview={!isMobile}
           />
         </div>
 
