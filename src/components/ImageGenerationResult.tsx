@@ -100,29 +100,36 @@ export function ImageGenerationResult({
 
     return createPortal(
       <div 
-        className="fixed inset-0 z-[999999] flex items-center justify-center"
-        onClick={handleCloseModal}
+        className="fixed inset-0 z-[999999]"
+        onClick={(e) => {
+          // Solo cerrar si el click fue directamente en este div
+          if (e.target === e.currentTarget) {
+            handleCloseModal();
+          }
+        }}
       >
-        <div className="absolute inset-0 bg-black/70 backdrop-blur-md" />
+        {/* Overlay separado del contenedor principal */}
+        <div className="absolute inset-0 bg-black/70 backdrop-blur-md pointer-events-none" />
         
-        <div className="relative z-10 p-6 max-w-[85vw] max-h-[85vh]">
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              handleCloseModal();
-            }}
-            className="absolute -top-10 right-2 text-white/90 hover:text-white transition-all p-2"
-            aria-label="Cerrar"
-          >
-            <X className="w-5 h-5" />
-          </button>
+        {/* Contenedor de la imagen y botón */}
+        <div className="relative z-10 w-full h-full flex items-center justify-center p-6">
+          <div className="relative">
+            {/* Botón de cerrar */}
+            <button
+              onClick={handleCloseModal}
+              className="absolute -top-10 right-2 text-white/90 hover:text-white transition-all p-2 z-20"
+              aria-label="Cerrar"
+            >
+              <X className="w-5 h-5" />
+            </button>
 
-          <img
-            src={image}
-            alt="Vista completa"
-            className="w-auto h-auto max-w-full max-h-[80vh] object-contain rounded-lg"
-            onClick={(e) => e.stopPropagation()}
-          />
+            {/* Imagen */}
+            <img
+              src={image}
+              alt="Vista completa"
+              className="w-auto h-auto max-w-[85vw] max-h-[80vh] object-contain rounded-lg"
+            />
+          </div>
         </div>
       </div>,
       document.body
