@@ -18,12 +18,12 @@ export function ImageModal({ imageUrl, onClose }: ImageModalProps) {
 
   return (
     <div 
-      className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center"
+      className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-[100]"
       onClick={onClose}
     >
       <button
         onClick={onClose}
-        className="absolute top-4 right-4 text-white p-2 hover:text-white/80 transition-colors rounded-full bg-black/20 backdrop-blur-sm"
+        className="absolute top-4 right-4 text-white p-2 hover:text-white/80 transition-colors rounded-full bg-black/20 backdrop-blur-sm z-[101]"
         aria-label="Cerrar"
       >
         <X className="w-6 h-6" />
